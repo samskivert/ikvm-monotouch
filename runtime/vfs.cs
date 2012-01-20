@@ -196,10 +196,12 @@ namespace IKVM.Internal
 					return false;
 				}
 
+#if NONMONOTOUCH
 				if (asm.GlobalAssemblyCache)
 				{
 					return true;
 				}
+#endif
 
 				if (ReflectUtil.IsDynamicAssembly(asm) || asm.Location == "")
 				{
@@ -660,6 +662,7 @@ namespace IKVM.Internal
 			{
 				if (buf == null)
 				{
+#if NONMONOTOUCH
 					global::java.security.KeyStore jstore = global::java.security.KeyStore.getInstance("jks");
 					jstore.load(null);
 					global::java.security.cert.CertificateFactory cf = global::java.security.cert.CertificateFactory.getInstance("X509");
@@ -674,8 +677,11 @@ namespace IKVM.Internal
 						}
 					}
 					store.Close();
+#endif
 					global::java.io.ByteArrayOutputStream baos = new global::java.io.ByteArrayOutputStream();
+#if NONMONOTOUCH
 					jstore.store(baos, new char[0]);
+#endif
 					buf = baos.toByteArray();
 				}
 			}
