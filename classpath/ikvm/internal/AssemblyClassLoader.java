@@ -169,17 +169,17 @@ public final class AssemblyClassLoader extends ClassLoader
         }
     }
 
-    protected Package getPackage(String name)
-    {
-        lazyDefinePackagesCheck();
-        return super.getPackage(name);
-    }
+    // protected Package getPackage(String name)
+    // {
+    //     lazyDefinePackagesCheck();
+    //     return super.getPackage(name);
+    // }
 
-    protected Package[] getPackages()
-    {
-        lazyDefinePackagesCheck();
-        return super.getPackages();
-    }
+    // protected Package[] getPackages()
+    // {
+    //     lazyDefinePackagesCheck();
+    //     return super.getPackages();
+    // }
 
     public String toString()
     {

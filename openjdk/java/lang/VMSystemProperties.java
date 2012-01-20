@@ -58,14 +58,14 @@ final class VMSystemProperties
 	    {
 		libraryPath += cli.System.IO.Path.PathSeparator + windir + "\\Sun\\Java\\bin";
 	    }
-            try
-            {
-                if(false) throw new cli.System.Security.SecurityException();
-                libraryPath += cli.System.IO.Path.PathSeparator + cli.System.Environment.get_SystemDirectory();
-            }
-            catch(cli.System.Security.SecurityException _)
-            {
-            }
+            // try
+            // {
+            //     if(false) throw new cli.System.Security.SecurityException();
+            //     libraryPath += cli.System.IO.Path.PathSeparator + cli.System.Environment.get_SystemDirectory();
+            // }
+            // catch(cli.System.Security.SecurityException _)
+            // {
+            // }
             if(windir != null)
             {
 		libraryPath += cli.System.IO.Path.PathSeparator + windir;
@@ -329,25 +329,25 @@ final class VMSystemProperties
 	// sun.java.launcher:=SUN_STANDARD
 	// sun.jnu.encoding:=Cp1252
 	// sun.management.compiler:=HotSpot Client Compiler
-        try
-        {
-            // read properties from app.config
-            if(false) throw new cli.System.Configuration.ConfigurationException();
-            cli.System.Collections.Specialized.NameValueCollection appSettings = cli.System.Configuration.ConfigurationSettings.get_AppSettings();
-            cli.System.Collections.IEnumerator keys = appSettings.GetEnumerator();
-            while(keys.MoveNext())
-            {
-                String key = (String)keys.get_Current();
-                if(key.startsWith("ikvm:"))
-                {
-                    p.setProperty(key.substring(5), appSettings.get_Item(key));
-                }
-            }
-        }
-        catch(cli.System.Configuration.ConfigurationException _)
-        {
-            // app.config is invalid, ignore
-        }
+        // try
+        // {
+        //     // read properties from app.config
+        //     if(false) throw new cli.System.Configuration.ConfigurationException();
+        //     cli.System.Collections.Specialized.NameValueCollection appSettings = cli.System.Configuration.ConfigurationSettings.get_AppSettings();
+        //     cli.System.Collections.IEnumerator keys = appSettings.GetEnumerator();
+        //     while(keys.MoveNext())
+        //     {
+        //         String key = (String)keys.get_Current();
+        //         if(key.startsWith("ikvm:"))
+        //         {
+        //             p.setProperty(key.substring(5), appSettings.get_Item(key));
+        //         }
+        //     }
+        // }
+        // catch(cli.System.Configuration.ConfigurationException _)
+        // {
+        //     // app.config is invalid, ignore
+        // }
         // set the properties that were specified with ikvm.runtime.Startup.setProperties()
         cli.System.Collections.IDictionary props = ikvm.runtime.Startup.props;
         if(props != null)

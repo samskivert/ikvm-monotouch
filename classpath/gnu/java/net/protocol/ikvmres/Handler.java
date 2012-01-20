@@ -241,10 +241,10 @@ public class Handler extends URLStreamHandler
 	return "ikvmres://" + quote(url.getHost(), RFC2396_REG_NAME) + quote(url.getFile(), RFC2396_PATH_SEGMENTS);
     }
 
-    protected InetAddress getHostAddress(URL url)
-    {
-	return null;
-    }
+    // protected InetAddress getHostAddress(URL url)
+    // {
+	// return null;
+    // }
 
     private static String quote (String str, String legalCharacters)
     {

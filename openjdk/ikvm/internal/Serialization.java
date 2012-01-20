@@ -19,7 +19,7 @@
 
   Jeroen Frijters
   jeroen@frijters.net
-  
+
 */
 package ikvm.internal;
 
@@ -27,9 +27,9 @@ import cli.System.Runtime.Serialization.SerializationException;
 import cli.System.Runtime.Serialization.SerializationInfo;
 import cli.System.Security.Permissions.SecurityAction;
 import cli.System.Security.Permissions.SecurityPermissionAttribute;
-import com.sun.xml.internal.ws.developer.ServerSideException;
-import java.io.InteropObjectInputStream;
-import java.io.InteropObjectOutputStream;
+// import com.sun.xml.internal.ws.developer.ServerSideException;
+// import java.io.InteropObjectInputStream;
+// import java.io.InteropObjectOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,22 +37,23 @@ import java.io.ObjectOutputStream;
 public final class Serialization
 {
     private Serialization() { }
-    
+
     @SecurityPermissionAttribute.Annotation(value = SecurityAction.__Enum.Demand, SerializationFormatter = true)
     public static void writeObject(Object obj, SerializationInfo info)
     {
-        InteropObjectOutputStream.writeObject(obj, info);
+        // InteropObjectOutputStream.writeObject(obj, info);
     }
-    
+
     @SecurityPermissionAttribute.Annotation(value = SecurityAction.__Enum.Demand, SerializationFormatter = true)
     public static void readObject(Object obj, SerializationInfo info)
     {
-        InteropObjectInputStream.readObject(obj, info);
+        // InteropObjectInputStream.readObject(obj, info);
     }
 
     public static Object writeReplace(cli.System.Exception x)
     {
-        ServerSideException sse = new ServerSideException(x.getClass().getName(), x.get_Message());
+        // ServerSideException sse = new ServerSideException(x.getClass().getName(), x.get_Message());
+        RuntimeException sse = new RuntimeException(x.getClass().getName() + ": " + x.get_Message());
         sse.initCause(x.get_InnerException());
         sse.setStackTrace(x.getStackTrace());
         return sse;
