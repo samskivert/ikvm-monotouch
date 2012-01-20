@@ -2536,6 +2536,15 @@ namespace IKVM.Internal
 					return 1;
 				}
 				StaticCompiler.IssueMessage(Message.NoJniRuntime);
+            }
+			catch(System.IO.IsolatedStorage.IsolatedStorageException)
+			{
+				if(StaticCompiler.runtimeAssembly == null)
+				{
+					Console.Error.WriteLine("Error: unable to load runtime assembly");
+					return 1;
+				}
+				StaticCompiler.IssueMessage(Message.NoJniRuntime);
 			}
 			Tracer.Info(Tracer.Compiler, "Loaded runtime assembly: {0}", StaticCompiler.runtimeAssembly.FullName);
 			bool compilingCoreAssembly = false;

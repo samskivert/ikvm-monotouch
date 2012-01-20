@@ -577,6 +577,10 @@ namespace IKVM.Reflection
 					return LoadAssembly(module);
 				}
 			}
+			catch (System.IO.IsolatedStorage.IsolatedStorageException x)
+			{
+				throw new FileNotFoundException(x.Message, x);
+			}
 			catch (IOException x)
 			{
 				throw new FileNotFoundException(x.Message, x);
