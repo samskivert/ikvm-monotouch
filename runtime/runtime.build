@@ -233,6 +233,6 @@
                 <include name="${framework::get-assembly-directory(framework::get-target-framework())}/System.Configuration.dll" />
             </references>
         </csc>
-        <copy file="IKVM.Runtime.dll" todir="../bin" />
+        <copy file="IKVM.Runtime.dll" tofile="../bin/IKVM.NoEmitRuntime.dll" />
     </target>
 </project>
