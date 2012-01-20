@@ -3067,56 +3067,47 @@ namespace IKVM.Internal
 
 			internal override string GetGenericSignature()
 			{
-				Debug.Fail("Unreachable code");
-				return null;
+				throw new System.Exception("Unreachable code");
 			}
 
 			internal override string[] GetEnclosingMethod()
 			{
-				Debug.Fail("Unreachable code");
-				return null;
+				throw new System.Exception("Unreachable code");
 			}
 
 			internal override string GetGenericMethodSignature(int index)
 			{
-				Debug.Fail("Unreachable code");
-				return null;
+				throw new System.Exception("Unreachable code");
 			}
 
 			internal override string GetGenericFieldSignature(int index)
 			{
-				Debug.Fail("Unreachable code");
-				return null;
+				throw new System.Exception("Unreachable code");
 			}
 
 			internal override object[] GetDeclaredAnnotations()
 			{
-				Debug.Fail("Unreachable code");
-				return null;
+				throw new System.Exception("Unreachable code");
 			}
 
 			internal override object GetMethodDefaultValue(int index)
 			{
-				Debug.Fail("Unreachable code");
-				return null;
+				throw new System.Exception("Unreachable code");
 			}
 
 			internal override object[] GetMethodAnnotations(int index)
 			{
-				Debug.Fail("Unreachable code");
-				return null;
+				throw new System.Exception("Unreachable code");
 			}
 
 			internal override object[][] GetParameterAnnotations(int index)
 			{
-				Debug.Fail("Unreachable code");
-				return null;
+				throw new System.Exception("Unreachable code");
 			}
 
 			internal override object[] GetFieldAnnotations(int index)
 			{
-				Debug.Fail("Unreachable code");
-				return null;
+				throw new System.Exception("Unreachable code");
 			}
 
 			internal override MethodInfo GetFinalizeMethod()
@@ -5450,8 +5441,7 @@ namespace IKVM.Internal
 					return impl.GetGenericMethodSignature(i);
 				}
 			}
-			Debug.Fail("Unreachable code");
-			return null;
+			throw new System.Exception("Unreachable code");
 		}
 
 		internal override string GetGenericFieldSignature(FieldWrapper fw)
@@ -5464,8 +5454,7 @@ namespace IKVM.Internal
 					return impl.GetGenericFieldSignature(i);
 				}
 			}
-			Debug.Fail("Unreachable code");
-			return null;
+			throw new System.Exception("Unreachable code");
 		}
 
 #if !STATIC_COMPILER
@@ -5548,8 +5537,7 @@ namespace IKVM.Internal
 					return null;
 				}
 			}
-			Debug.Fail("Unreachable code");
-			return null;
+			throw new System.Exception("Unreachable code");
 		}
 
 		internal override object[][] GetParameterAnnotations(MethodWrapper mw)
@@ -5576,8 +5564,7 @@ namespace IKVM.Internal
 					return null;
 				}
 			}
-			Debug.Fail("Unreachable code");
-			return null;
+			throw new System.Exception("Unreachable code");
 		}
 
 		internal override object[] GetFieldAnnotations(FieldWrapper fw)
@@ -5600,8 +5587,7 @@ namespace IKVM.Internal
 					return null;
 				}
 			}
-			Debug.Fail("Unreachable code");
-			return null;
+			throw new System.Exception("Unreachable code");
 		}
 
 		internal override object GetAnnotationDefault(MethodWrapper mw)
@@ -5619,8 +5605,7 @@ namespace IKVM.Internal
 					return null;
 				}
 			}
-			Debug.Fail("Unreachable code");
-			return null;
+			throw new System.Exception("Unreachable code");
 		}
 #endif
 
