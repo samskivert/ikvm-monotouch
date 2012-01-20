@@ -1109,14 +1109,14 @@ namespace IKVM.Internal
 				Dictionary<string, string> dict = new Dictionary<string, string>();
 				try
 				{
-					foreach (string key in System.Configuration.ConfigurationManager.AppSettings.AllKeys)
-					{
-						const string prefix = "ikvm-classloader:";
-						if (key.StartsWith(prefix))
-						{
-							dict[key.Substring(prefix.Length)] = System.Configuration.ConfigurationManager.AppSettings.Get(key);
-						}
-					}
+					// foreach (string key in System.Configuration.ConfigurationManager.AppSettings.AllKeys)
+					// {
+					// 	const string prefix = "ikvm-classloader:";
+					// 	if (key.StartsWith(prefix))
+					// 	{
+					// 		dict[key.Substring(prefix.Length)] = System.Configuration.ConfigurationManager.AppSettings.Get(key);
+					// 	}
+					// }
 				}
 				catch (Exception x)
 				{

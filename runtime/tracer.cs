@@ -26,10 +26,36 @@ using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Configuration;
+// using System.Configuration;
 
 namespace IKVM.Internal
 {
+    public enum TraceLevel
+    {
+        Off = 0, Error = 1, Warning = 2, Info = 3, Verbose = 4,
+    }
+
+    public class TraceSwitch
+    {
+        public string DisplayName;
+        public TraceLevel Level;
+
+        public bool TraceInfo {
+            get { return Level >= TraceLevel.Info; }
+        }
+        public bool TraceWarning {
+            get { return Level >= TraceLevel.Warning; }
+        }
+        public bool TraceError {
+            get { return Level >= TraceLevel.Error; }
+        }
+
+        public TraceSwitch(string name, string desc) {
+            this.DisplayName = name;
+            this.Level = TraceLevel.Off;
+        }
+    }
+
 	public static class Tracer
 	{
 		public readonly static TraceSwitch Compiler = new TraceSwitch("compiler", "Static Compiler");
@@ -43,27 +69,27 @@ namespace IKVM.Internal
 
 		private readonly static List<string> methodtraces = new List<string>();
 
-		private class MyTextWriterTraceListener : TextWriterTraceListener
-		{
-			internal MyTextWriterTraceListener(System.IO.TextWriter tw)
-				: base(tw)
-			{
-			}
+// 		private class MyTextWriterTraceListener : TextWriterTraceListener
+// 		{
+// 			internal MyTextWriterTraceListener(System.IO.TextWriter tw)
+// 				: base(tw)
+// 			{
+// 			}
 
-			public override void Fail(string message)
-			{
-				this.WriteLine("Assert.Fail: " + message);
-				this.WriteLine(new StackTrace(true).ToString());
-				base.Fail(message);
-			}
+// 			public override void Fail(string message)
+// 			{
+// 				this.WriteLine("Assert.Fail: " + message);
+// 				this.WriteLine(new StackTrace(true).ToString());
+// 				base.Fail(message);
+// 			}
 
-			public override void Fail(string message, string detailMessage)
-			{
-				this.WriteLine("Assert.Fail: " + message + ".\n" + detailMessage);
-				this.WriteLine(new StackTrace(true).ToString());
-				base.Fail(message, detailMessage);
-			}
-		}
+// 			public override void Fail(string message, string detailMessage)
+// 			{
+// 				this.WriteLine("Assert.Fail: " + message + ".\n" + detailMessage);
+// 				this.WriteLine(new StackTrace(true).ToString());
+// 				base.Fail(message, detailMessage);
+// 			}
+// 		}
 
 		static Tracer()
 		{
@@ -85,22 +111,22 @@ namespace IKVM.Internal
 			allTraceSwitches[Runtime.DisplayName] = Runtime;
 			allTraceSwitches[Jni.DisplayName] = Jni;
 
-			try
-			{
-				Trace.AutoFlush = true;
-#if !STUB_GENERATOR
-				/* If the app config file gives some method trace - add it */
-				string trace = ConfigurationManager.AppSettings["Traced Methods"];
-				if(trace != null)
-				{
-					methodtraces.Add(trace);
-				}
-#endif
-			}
-			catch(ConfigurationException)
-			{
-				// app.config is malformed, ignore
-			}
+// 			try
+// 			{
+// 				Trace.AutoFlush = true;
+// #if !STUB_GENERATOR
+// 				/* If the app config file gives some method trace - add it */
+// 				string trace = ConfigurationManager.AppSettings["Traced Methods"];
+// 				if(trace != null)
+// 				{
+// 					methodtraces.Add(trace);
+// 				}
+// #endif
+// 			}
+// 			catch(ConfigurationException)
+// 			{
+// 				// app.config is malformed, ignore
+// 			}
 		}
 
 		[Conditional("DEBUG")]
@@ -111,7 +137,7 @@ namespace IKVM.Internal
 
 		public static void EnableTraceConsoleListener()
 		{
-			Trace.Listeners.Add(new MyTextWriterTraceListener(Console.Error));
+			// Trace.Listeners.Add(new MyTextWriterTraceListener(Console.Error));
 		}
 
 		public static void HandleMethodTrace(string name)
@@ -146,10 +172,10 @@ namespace IKVM.Internal
 		public static void SetTraceLevel(string name)
 		{
 			string[] trace = name.Split('=');
-			System.Diagnostics.TraceLevel level = System.Diagnostics.TraceLevel.Verbose;
+			TraceLevel level = TraceLevel.Verbose;
 			if(trace.Length == 2)
 			{
-				level = (System.Diagnostics.TraceLevel)Enum.Parse(typeof(System.Diagnostics.TraceLevel), trace[1], true);
+				level = (TraceLevel)Enum.Parse(typeof(TraceLevel), trace[1], true);
 			}
 			SetTraceLevel(trace[0], level);
 		}
@@ -183,7 +209,7 @@ namespace IKVM.Internal
 			{
 				message = string.Format(message, p);
 			}
-			Trace.WriteLine(string.Format("[{0:HH':'mm':'ss'.'fffff} {1}] {2}", DateTime.Now, Thread.CurrentThread.Name, message));
+			// Trace.WriteLine(string.Format("[{0:HH':'mm':'ss'.'fffff} {1}] {2}", DateTime.Now, Thread.CurrentThread.Name, message));
 		}
 
 		[Conditional("TRACE")]
@@ -198,7 +224,7 @@ namespace IKVM.Internal
 		[Conditional("TRACE")]
 		public static void MethodInfo(string message)
 		{
-			Trace.WriteLine(string.Format("[{0:HH':'mm':'ss'.'fffff} {1}] {2}", DateTime.Now, Thread.CurrentThread.Name, message));
+			// Trace.WriteLine(string.Format("[{0:HH':'mm':'ss'.'fffff} {1}] {2}", DateTime.Now, Thread.CurrentThread.Name, message));
 		}
 
 		[Conditional("TRACE")]
@@ -218,5 +244,5 @@ namespace IKVM.Internal
 				WriteLine(message, p);
 			}
 		}
-	}
+ 	}
 }

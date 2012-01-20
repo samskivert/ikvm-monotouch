@@ -170,7 +170,7 @@ namespace IKVM.Internal
 				if (emitSymbols == 0)
 				{
 					int state;
-					string debug = System.Configuration.ConfigurationManager.AppSettings["ikvm-emit-symbols"];
+					string debug = null; // System.Configuration.ConfigurationManager.AppSettings["ikvm-emit-symbols"];
 					if (debug == null)
 					{
 						state = Debugger.IsAttached ? 1 : 2;
