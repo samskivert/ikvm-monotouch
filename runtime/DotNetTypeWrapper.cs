@@ -1559,12 +1559,14 @@ namespace IKVM.Internal
 					{
 						// you can't add declarative security to a parameter
 					}
+#if NONMONOTOUCH
 					else if (type == JVM.Import(typeof(System.Runtime.InteropServices.DefaultParameterValueAttribute)))
 					{
 						// TODO with the current custom attribute annotation restrictions it is impossible to use this CA,
 						// but if we make it possible, we should also implement it here
 						throw new NotImplementedException();
 					}
+#endif
 					else
 					{
 						pb.SetCustomAttribute(MakeCustomAttributeBuilder(loader, annotation));

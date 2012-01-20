@@ -365,6 +365,7 @@ namespace IKVM.NativeCode.java
 			public static string encoding()
 			{
 				int cp = 437;
+#if NONMONOTOUCH
 				try
 				{
 					cp = global::System.Console.InputEncoding.CodePage;
@@ -376,6 +377,7 @@ namespace IKVM.NativeCode.java
 				{
 					return "ms" + cp;
 				}
+#endif
 				return "cp" + cp;
 			}
 
@@ -428,6 +430,7 @@ namespace IKVM.NativeCode.java
 
 			public static bool istty()
 			{
+#if NONMONOTOUCH
 				// The JDK returns false here if stdin or stdout (not stderr) is redirected to a file
 				// or if there is no console associated with the current process.
 				// The best we can do is to look at the KeyAvailable property, which
@@ -440,6 +443,9 @@ namespace IKVM.NativeCode.java
 				{
 					return false;
 				}
+#else
+                return false;
+#endif
 			}
 		}
 
@@ -4732,6 +4738,7 @@ namespace IKVM.NativeCode.java
 
 			static class WindowsPreferences
 			{
+#if NONMONOTOUCH
 				// HACK we currently support only 16 handles at a time
 				private static readonly Microsoft.Win32.RegistryKey[] keys = new Microsoft.Win32.RegistryKey[16];
 
@@ -4766,6 +4773,7 @@ namespace IKVM.NativeCode.java
 						return 0;
 					}
 				}
+#endif
 
 				private static string BytesToString(byte[] bytes)
 				{
@@ -4788,6 +4796,7 @@ namespace IKVM.NativeCode.java
 
 				public static int[] WindowsRegOpenKey(int hKey, byte[] subKey, int securityMask)
 				{
+#if NONMONOTOUCH
                     // writeable = DELETE == 0x10000 || KEY_SET_VALUE == 2 || KEY_CREATE_SUB_KEY == 4 || KEY_WRITE = 0x20006;
                     // !writeable : KEY_ENUMERATE_SUB_KEYS == 8 || KEY_READ == 0x20019 || KEY_QUERY_VALUE == 1
 					bool writable = (securityMask & 0x10006) != 0;
@@ -4821,20 +4830,26 @@ namespace IKVM.NativeCode.java
 						error = 5;
 					}
 					return new int[] { AllocHandle(resultKey), error };
+#else
+					return new int[] { 0, 1 };
+#endif
 				}
 
 				public static int WindowsRegCloseKey(int hKey)
 				{
+#if NONMONOTOUCH
 					keys[hKey - 1].Close();
 					lock (keys)
 					{
 						keys[hKey - 1] = null;
 					}
+#endif
 					return 0;
 				}
 
 				public static int[] WindowsRegCreateKeyEx(int hKey, byte[] subKey)
 				{
+#if NONMONOTOUCH
 					Microsoft.Win32.RegistryKey resultKey = null;
 					int error = 0;
 					int disposition = -1;
@@ -4859,10 +4874,14 @@ namespace IKVM.NativeCode.java
 						error = 5;
 					}
 					return new int[] { AllocHandle(resultKey), error, disposition };
+#else
+                    return new int[] { 0, 99, -1 };
+#endif
 				}
 
 				public static int WindowsRegDeleteKey(int hKey, byte[] subKey)
 				{
+#if NONMONOTOUCH
 					try
 					{
 						MapKey(hKey).DeleteSubKey(BytesToString(subKey), false);
@@ -4872,16 +4891,22 @@ namespace IKVM.NativeCode.java
 					{
 						return 5;
 					}
+#else
+					return 5;
+#endif
 				}
 
 				public static int WindowsRegFlushKey(int hKey)
 				{
+#if NONMONOTOUCH
 					MapKey(hKey).Flush();
+#endif
 					return 0;
 				}
 
 				public static byte[] WindowsRegQueryValueEx(int hKey, byte[] valueName)
 				{
+#if NONMONOTOUCH
 					try
 					{
 						string value = MapKey(hKey).GetValue(BytesToString(valueName)) as string;
@@ -4899,11 +4924,15 @@ namespace IKVM.NativeCode.java
 					{
 						return null;
 					}
+#else
+					return null;
+#endif
 				}
 
 				public static int WindowsRegSetValueEx(int hKey, byte[] valueName, byte[] data)
 				{
-					if (valueName == null || data == null)
+#if NONMONOTOUCH
+                    if (valueName == null || data == null)
 					{
 						return -1;
 					}
@@ -4920,10 +4949,14 @@ namespace IKVM.NativeCode.java
 					{
 						return 5;
 					}
+#else
+					return 5;
+#endif
 				}
 
                 public static int WindowsRegDeleteValue(int hKey, byte[] valueName)
                 {
+#if NONMONOTOUCH
                     try
                     {
                         MapKey(hKey).DeleteValue(BytesToString(valueName));
@@ -4939,13 +4972,17 @@ namespace IKVM.NativeCode.java
                     }
                     catch (UnauthorizedAccessException)
                     {
-                        return 5; //ERROR_ACCESS_DENIED
+                        return 5; ERROR_ACCESS_DENIED
                     }
+#else
+					return 5;
+#endif
                 }
 
 				public static int[] WindowsRegQueryInfoKey(int hKey)
 				{
 					int[] result = new int[5] { -1, -1, -1, -1, -1 };
+#if NONMONOTOUCH
 					try
 					{
 						Microsoft.Win32.RegistryKey key = MapKey(hKey);
@@ -4969,11 +5006,15 @@ namespace IKVM.NativeCode.java
 					{
 						result[1] = 5;
 					}
+#else
+					result[1] = 5;
+#endif
 					return result;
 				}
 
 				public static byte[] WindowsRegEnumKeyEx(int hKey, int subKeyIndex, int maxKeyLength)
 				{
+#if NONMONOTOUCH
 					try
 					{
 						return StringToBytes(MapKey(hKey).GetSubKeyNames()[subKeyIndex]);
@@ -4986,10 +5027,14 @@ namespace IKVM.NativeCode.java
 					{
 						return null;
 					}
+#else
+					return null;
+#endif
 				}
 
 				public static byte[] WindowsRegEnumValue(int hKey, int valueIndex, int maxValueNameLength)
 				{
+#if NONMONOTOUCH
 					try
 					{
 						return StringToBytes(MapKey(hKey).GetValueNames()[valueIndex]);
@@ -5002,6 +5047,9 @@ namespace IKVM.NativeCode.java
 					{
 						return null;
 					}
+#else
+					return null;
+#endif
 				}
 			}
 
