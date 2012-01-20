@@ -29,7 +29,9 @@ using IKVM.Reflection.Emit;
 using Type = IKVM.Reflection.Type;
 #else
 using System.Reflection;
+#if !NOEMIT
 using System.Reflection.Emit;
+#endif
 #endif
 using System.Diagnostics;
 using IKVM.Attributes;
@@ -342,7 +344,7 @@ namespace IKVM.Internal
 		private TypeWrapper returnTypeWrapper;
 		private TypeWrapper[] parameterTypeWrappers;
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		internal virtual void EmitCall(CodeEmitter ilgen)
 		{
 			throw new InvalidOperationException();
@@ -400,7 +402,7 @@ namespace IKVM.Internal
 				}
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			protected override void CallvirtImpl(CodeEmitter ilgen)
 			{
 				ResolveGhostMethod();
@@ -445,10 +447,12 @@ namespace IKVM.Internal
 			Debug.Assert(((returnType == null) == (parameterTypes == null)) || (returnType == PrimitiveTypeWrapper.VOID));
 			this.returnTypeWrapper = returnType;
 			this.parameterTypeWrappers = parameterTypes;
+#if !NOEMIT
 			if (Intrinsics.IsIntrinsic(this))
 			{
 				SetIntrinsicFlag();
 			}
+#endif
 			UpdateNonPublicTypeInSignatureFlag();
 		}
 
@@ -560,6 +564,7 @@ namespace IKVM.Internal
 			Type[] types = Type.EmptyTypes;
 			if (classes == null)
 			{
+#if !NOEMIT
 				// NOTE if method is a MethodBuilder, GetCustomAttributes doesn't work (and if
 				// the method had any declared exceptions, the declaredExceptions field would have
 				// been set)
@@ -572,6 +577,7 @@ namespace IKVM.Internal
 						types = attr.types;
 					}
 				}
+#endif
 			}
 			if (classes != null)
 			{
@@ -792,7 +798,7 @@ namespace IKVM.Internal
 		[HideFromJava]
 		internal object InvokeJNI(object obj, object[] args, bool nonVirtual, object callerID)
 		{
-#if FIRST_PASS
+#if FIRST_PASS || NOEMIT
 			return null;
 #else
 			if (ReferenceEquals(Name, StringConstants.INIT))
@@ -914,7 +920,7 @@ namespace IKVM.Internal
 		}
 #endif // !STATIC_COMPILER && !STUB_GENERATOR
 
-#if !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR
+#if !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR && !NOEMIT
 		internal void ResolveMethod()
 		{
 			// if we've still got the builder object, we need to replace it with the real thing before we can call it
@@ -1001,6 +1007,7 @@ namespace IKVM.Internal
 		}
 #endif // !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR
 
+#if !NOEMIT
 		internal static OpCode SimpleOpCodeToOpCode(SimpleOpCode opc)
 		{
 			switch(opc)
@@ -1015,6 +1022,7 @@ namespace IKVM.Internal
 					throw new InvalidOperationException();
 			}
 		}
+#endif
 
 		internal virtual bool IsOptionalAttributeAnnotationValue
 		{
@@ -1045,7 +1053,7 @@ namespace IKVM.Internal
 		{
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		protected virtual void PreEmit(CodeEmitter ilgen)
 		{
 		}
@@ -1120,7 +1128,7 @@ namespace IKVM.Internal
 			this.callvirt = callvirt;
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		internal override void EmitCall(CodeEmitter ilgen)
 		{
 			ilgen.Emit(SimpleOpCodeToOpCode(call), (MethodInfo)GetMethod());
@@ -1145,7 +1153,7 @@ namespace IKVM.Internal
 			this.callvirt = callvirt;
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		protected override void CallImpl(CodeEmitter ilgen)
 		{
 			ilgen.Emit(SimpleOpCodeToOpCode(call), (MethodInfo)GetMethod());
@@ -1165,7 +1173,7 @@ namespace IKVM.Internal
 		{
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		protected override void CallImpl(CodeEmitter ilgen)
 		{
 			ilgen.Emit(OpCodes.Call, (ConstructorInfo)GetMethod());
@@ -1318,7 +1326,7 @@ namespace IKVM.Internal
 			}
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		internal void EmitGet(CodeEmitter ilgen)
 		{
 			AssertLinked();
@@ -1388,11 +1396,13 @@ namespace IKVM.Internal
 #if !STATIC_COMPILER && !STUB_GENERATOR
 		internal virtual void ResolveField()
 		{
+#if !NOEMIT
 			FieldBuilder fb = field as FieldBuilder;
 			if(fb != null)
 			{
 				field = field.Module.ResolveField(fb.GetToken().Token);
 			}
+#endif
 		}
 
 		internal object GetFieldAccessorJNI()
@@ -1418,7 +1428,7 @@ namespace IKVM.Internal
 			Debug.Assert(!(fieldType == PrimitiveTypeWrapper.DOUBLE || fieldType == PrimitiveTypeWrapper.LONG) || !IsVolatile);
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		protected override void EmitGetImpl(CodeEmitter ilgen)
 		{
 			if(!IsStatic && DeclaringType.IsNonPrimitiveValueType)
@@ -1464,7 +1474,7 @@ namespace IKVM.Internal
 			Debug.Assert(sig == "J" || sig == "D");
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		protected override void EmitGetImpl(CodeEmitter ilgen)
 		{
 			FieldInfo fi = GetField();
@@ -1552,7 +1562,7 @@ namespace IKVM.Internal
 			return prop;
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		protected override void EmitGetImpl(CodeEmitter ilgen)
 		{
 			if(!IsStatic && DeclaringType.IsNonPrimitiveValueType)
@@ -1594,7 +1604,7 @@ namespace IKVM.Internal
 #endif // !STUB_GENERATOR
 	}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 	// this class represents a .NET property defined in Java with the ikvm.lang.Property annotation
 	sealed class DynamicPropertyFieldWrapper : FieldWrapper
 	{
@@ -1624,7 +1634,7 @@ namespace IKVM.Internal
 			setter = GetMethod(fld.PropertySetter, "(" + fld.Signature + ")V", fld.IsStatic);
 		}
 
-#if !STATIC_COMPILER && !FIRST_PASS
+#if !STATIC_COMPILER && !FIRST_PASS && !NOEMIT
 		internal override void ResolveField()
 		{
 			if (getter != null)
@@ -1754,7 +1764,7 @@ namespace IKVM.Internal
 			this.property = property;
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		protected override void EmitGetImpl(CodeEmitter ilgen)
 		{
 			MethodInfo getter = property.GetGetMethod(true);
@@ -1820,7 +1830,7 @@ namespace IKVM.Internal
 			this.constant = constant;
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		protected override void EmitGetImpl(CodeEmitter ilgen)
 		{
 			// Reading a field should trigger the cctor, but since we're inlining the value
@@ -1922,7 +1932,7 @@ namespace IKVM.Internal
 			this.setter = property.GetSetMethod(true);
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		protected override void EmitGetImpl(CodeEmitter ilgen)
 		{
 			ilgen.Emit(OpCodes.Call, getter);

@@ -334,7 +334,11 @@ namespace IKVM.NativeCode.ikvm.runtime
 
 		private static bool IsDynamic(jlClass clazz)
 		{
+#if !NOEMIT
 			return TypeWrapper.FromClass(clazz) is DynamicTypeWrapper;
+#else
+            return false;
+#endif
 		}
 
 		// NOTE the array may contain duplicates!
@@ -533,11 +537,13 @@ namespace IKVM.NativeCode.ikvm.runtime
 			{
 				return false;
 			}
+#if !NOEMIT
 			System.Reflection.Emit.TypeBuilder tb = type as System.Reflection.Emit.TypeBuilder;
 			if (tb != null && !tb.IsCreated())
 			{
 				return false;
-			}
+            }
+#endif
 			return true;
 		}
 

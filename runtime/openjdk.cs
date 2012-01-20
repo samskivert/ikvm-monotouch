@@ -26,7 +26,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+#if !NOEMIT
 using System.Reflection.Emit;
+#endif
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
@@ -271,6 +273,7 @@ namespace IKVM.Runtime
 	}
 }
 
+#if !NOEMIT
 static class DynamicMethodUtils
 {
 #if NET_4_0
@@ -332,6 +335,7 @@ static class DynamicMethodUtils
 		}
 	}
 }
+#endif
 
 namespace IKVM.NativeCode.ikvm.runtime
 {
@@ -757,7 +761,7 @@ namespace IKVM.NativeCode.java
 				return false;
 			}
 
-#if !FIRST_PASS
+#if !FIRST_PASS && !NOEMIT
 			private sealed class FastFieldReflector : iiFieldReflectorBase
 			{
 				private static readonly MethodInfo ReadByteMethod = typeof(IOHelpers).GetMethod("ReadByte");
@@ -1023,7 +1027,7 @@ namespace IKVM.NativeCode.java
 
 			public static object getFastFieldReflector(object fieldsObj)
 			{
-#if FIRST_PASS
+#if FIRST_PASS || NOEMIT
 				return null;
 #else
 				return new FastFieldReflector((jiObjectStreamField[])fieldsObj);
@@ -5944,6 +5948,7 @@ namespace IKVM.NativeCode.sun.reflect
 			}
 		}
 
+#if !NOEMIT
 		internal sealed class FastMethodAccessorImpl : srMethodAccessor
 		{
 			private static readonly MethodInfo valueOfByte;
@@ -6360,6 +6365,7 @@ namespace IKVM.NativeCode.sun.reflect
 				}
 			}
 		}
+#endif
 
 		private sealed class ConstructorAccessorImpl : srConstructorAccessor
 		{
@@ -6386,6 +6392,7 @@ namespace IKVM.NativeCode.sun.reflect
 			}
 		}
 
+#if !NOEMIT
 		private sealed class FastConstructorAccessorImpl : srConstructorAccessor
 		{
 			private delegate object Invoker(object[] args);
@@ -6543,6 +6550,7 @@ namespace IKVM.NativeCode.sun.reflect
 				}
 			}
 		}
+#endif
 
 		sealed class ActivatorConstructorAccessor : srConstructorAccessor
 		{
@@ -6837,7 +6845,9 @@ namespace IKVM.NativeCode.sun.reflect
 						// FXBUG it appears that a ldsfld/stsfld in a DynamicMethod doesn't trigger the class constructor
 						// and if we didn't use the slow path, we haven't yet initialized the class
 						fw.DeclaringType.RunClassInit();
+#if !NOEMIT
 						getter = (Getter)GenerateFastGetter(typeof(Getter), typeof(T), fw);
+#endif
 						return getter(obj, this);
 					}
 				}
@@ -6881,7 +6891,9 @@ namespace IKVM.NativeCode.sun.reflect
 						// FXBUG it appears that a ldsfld/stsfld in a DynamicMethod doesn't trigger the class constructor
 						// and if we didn't use the slow path, we haven't yet initialized the class
 						fw.DeclaringType.RunClassInit();
+#if !NOEMIT
 						setter = (Setter)GenerateFastSetter(typeof(Setter), typeof(T), fw);
+#endif
 						setter(obj, value, this);
 					}
 				}
@@ -7553,6 +7565,7 @@ namespace IKVM.NativeCode.sun.reflect
 				}
 			}
 
+#if !NOEMIT
 			private Delegate GenerateFastGetter(Type delegateType, Type fieldType, FieldWrapper fw)
 			{
 				fw.FieldTypeWrapper.Finish();
@@ -7648,6 +7661,7 @@ namespace IKVM.NativeCode.sun.reflect
 				ilgen.DoEmit();
 				return dm.CreateDelegate(delegateType, this);
 			}
+#endif
 
 			internal static FieldAccessorImplBase Create(FieldWrapper field, bool overrideAccessCheck)
 			{
@@ -7725,7 +7739,11 @@ namespace IKVM.NativeCode.sun.reflect
 			}
 			else
 			{
+#if !NOEMIT
 				return new FastMethodAccessorImpl(m, false);
+#else
+				return new MethodAccessorImpl(m);
+#endif
 			}
 #endif
 		}
@@ -7750,14 +7768,18 @@ namespace IKVM.NativeCode.sun.reflect
 			}
 			else
 			{
+#if !NOEMIT
 				return new FastConstructorAccessorImpl(cons);
+#else
+				return new ConstructorAccessorImpl(cons);
+#endif
 			}
 #endif
 		}
 
 		public static object newConstructorAccessorForSerialization(jlClass classToInstantiate, jlrConstructor constructorToCall)
 		{
-#if FIRST_PASS
+#if FIRST_PASS || NOEMIT
 			return null;
 #else
 			try

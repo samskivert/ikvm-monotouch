@@ -29,7 +29,9 @@ using IKVM.Reflection.Emit;
 using Type = IKVM.Reflection.Type;
 #else
 using System.Reflection;
+#if !NOEMIT
 using System.Reflection.Emit;
+#endif
 #endif
 using System.Diagnostics;
 using System.Security;
@@ -61,7 +63,9 @@ namespace IKVM.Internal
 
 	static class AttributeHelper
 	{
+#if !NOEMIT
 		private static CustomAttributeBuilder hideFromJavaAttribute;
+#endif
 #if STATIC_COMPILER
 		private static CustomAttributeBuilder ghostInterfaceAttribute;
 		private static CustomAttributeBuilder deprecatedAttribute;
@@ -467,6 +471,7 @@ namespace IKVM.Internal
 		}
 #endif // STATIC_COMPILER
 
+#if !NOEMIT
 		internal static void HideFromReflection(MethodBuilder mb)
 		{
 			CustomAttributeBuilder cab = new CustomAttributeBuilder(typeofHideFromReflectionAttribute.GetConstructor(Type.EmptyTypes), new object[0]);
@@ -484,12 +489,14 @@ namespace IKVM.Internal
 			CustomAttributeBuilder cab = new CustomAttributeBuilder(typeofHideFromReflectionAttribute.GetConstructor(Type.EmptyTypes), new object[0]);
 			pb.SetCustomAttribute(cab);
 		}
+#endif
 
 		internal static bool IsHideFromReflection(MemberInfo mi)
 		{
 			return mi.IsDefined(typeofHideFromReflectionAttribute, false);
 		}
 
+#if !NOEMIT
 		internal static void HideFromJava(TypeBuilder typeBuilder)
 		{
 			if(hideFromJavaAttribute == null)
@@ -525,6 +532,7 @@ namespace IKVM.Internal
 			}
 			fb.SetCustomAttribute(hideFromJavaAttribute);
 		}
+#endif // !NOEMIT
 
 #if STATIC_COMPILER
 		internal static void HideFromJava(PropertyBuilder pb)
@@ -1238,6 +1246,7 @@ namespace IKVM.Internal
 		}
 #endif // STATIC_COMPILER
 
+#if !NOEMIT
 		internal static void SetRuntimeCompatibilityAttribute(AssemblyBuilder assemblyBuilder)
 		{
 			Type runtimeCompatibilityAttribute = JVM.Import(typeof(System.Runtime.CompilerServices.RuntimeCompatibilityAttribute));
@@ -1246,6 +1255,7 @@ namespace IKVM.Internal
 				new PropertyInfo[] { runtimeCompatibilityAttribute.GetProperty("WrapNonExceptionThrows") }, new object[] { true },
 				new FieldInfo[0], new object[0]));
 		}
+#endif
 	}
 
 	static class EnumHelper
@@ -1622,6 +1632,7 @@ namespace IKVM.Internal
 			}
 		}
 
+#if !NOEMIT
 		internal abstract void Apply(ClassLoaderWrapper loader, TypeBuilder tb, object annotation);
 		internal abstract void Apply(ClassLoaderWrapper loader, MethodBuilder mb, object annotation);
 		internal abstract void Apply(ClassLoaderWrapper loader, ConstructorBuilder cb, object annotation);
@@ -1633,6 +1644,7 @@ namespace IKVM.Internal
 		internal virtual void ApplyReturnValue(ClassLoaderWrapper loader, MethodBuilder mb, ref ParameterBuilder pb, object annotation)
 		{
 		}
+#endif
 	}
 
 	[Flags]
@@ -1672,7 +1684,7 @@ namespace IKVM.Internal
 			this.baseWrapper = baseWrapper;
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		internal void EmitClassLiteral(CodeEmitter ilgen)
 		{
 			Debug.Assert(!this.IsPrimitive);
@@ -1799,8 +1811,10 @@ namespace IKVM.Internal
 			{
 				if (classObject == null)
 				{
+#if !NOEMIT
 					// DynamicTypeWrapper should haved already had SetClassObject explicitly
 					Debug.Assert(!(this is DynamicTypeWrapper));
+#endif
 #if !FIRST_PASS
 					java.lang.Class clazz;
 					// note that this has to be the same check as in EmitClassLiteral
@@ -2488,6 +2502,7 @@ namespace IKVM.Internal
 			get;
 		}
 
+#if !NOEMIT
 		internal virtual TypeBuilder TypeAsBuilder
 		{
 			get
@@ -2497,6 +2512,7 @@ namespace IKVM.Internal
 				return typeBuilder;
 			}
 		}
+#endif
 
 		internal Type TypeAsSignatureType
 		{
@@ -2768,7 +2784,9 @@ namespace IKVM.Internal
 				{
 					type = type.GetElementType();
 				}
+#if !NOEMIT
 				Debug.Assert(!(type is TypeBuilder));
+#endif
 			}
 		}
 #endif
@@ -2784,7 +2802,7 @@ namespace IKVM.Internal
 		}
 #endif
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		internal void EmitUnbox(CodeEmitter ilgen)
 		{
 			Debug.Assert(this.IsNonPrimitiveValueType);
@@ -2933,7 +2951,7 @@ namespace IKVM.Internal
 			return fw.GetField();
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		internal virtual void EmitRunClassConstructor(CodeEmitter ilgen)
 		{
 		}
@@ -3056,7 +3074,7 @@ namespace IKVM.Internal
 			}
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		// return the constructor used for automagic .NET serialization
 		internal virtual ConstructorInfo GetSerializationConstructor()
 		{
@@ -3149,7 +3167,7 @@ namespace IKVM.Internal
 			throw new InvalidOperationException("Finish called on UnloadableTypeWrapper: " + Name);
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		internal override void EmitCheckcast(TypeWrapper context, CodeEmitter ilgen)
 		{
 			ilgen.Emit(OpCodes.Ldtoken, context.TypeAsTBD);
@@ -3521,7 +3539,9 @@ namespace IKVM.Internal
 		private CompiledTypeWrapper(string name, Type type)
 			: this(GetModifiers(type), name, GetBaseTypeWrapper(type))
 		{
+#if !NOEMIT
 			Debug.Assert(!(type is TypeBuilder));
+#endif
 			Debug.Assert(!type.Name.EndsWith("[]"));
 
 			this.type = type;
@@ -3905,7 +3925,7 @@ namespace IKVM.Internal
 				invoke = (MethodInfo)mw.GetMethod();
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			internal override void EmitNewobj(CodeEmitter ilgen)
 			{
 				ilgen.Emit(OpCodes.Dup);
@@ -4033,7 +4053,7 @@ namespace IKVM.Internal
 #endif
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			protected override void CallImpl(CodeEmitter ilgen)
 			{
 				MethodBase mb = GetMethod();
@@ -4078,7 +4098,7 @@ namespace IKVM.Internal
 			}
 #endif // !STUB_GENERATOR
 
-#if !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR
+#if !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR && !NOEMIT
 			[HideFromJava]
 			protected override object InvokeNonvirtualRemapped(object obj, object[] args)
 			{
@@ -4191,7 +4211,7 @@ namespace IKVM.Internal
 			}
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		internal override void EmitRunClassConstructor(CodeEmitter ilgen)
 		{
 			if(HasStaticInitializer)
@@ -4339,6 +4359,7 @@ namespace IKVM.Internal
 				this.type = type;
 			}
 
+#if !NOEMIT
 			private CustomAttributeBuilder MakeCustomAttributeBuilder(object annotation)
 			{
 				return new CustomAttributeBuilder(type.GetConstructor(new Type[] { JVM.Import(typeof(object[])) }), new object[] { annotation });
@@ -4385,6 +4406,7 @@ namespace IKVM.Internal
 				annotation = QualifyClassNames(loader, annotation);
 				pb.SetCustomAttribute(MakeCustomAttributeBuilder(annotation));
 			}
+#endif
 		}
 
 		internal override Annotation Annotation

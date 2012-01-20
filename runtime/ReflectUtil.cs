@@ -28,7 +28,9 @@ using IKVM.Reflection.Emit;
 using Type = IKVM.Reflection.Type;
 #else
 using System.Reflection;
+#if !NOEMIT
 using System.Reflection.Emit;
+#endif
 #endif
 
 namespace IKVM.Internal
@@ -57,7 +59,7 @@ namespace IKVM.Internal
 
 		internal static bool IsDynamicAssembly(Assembly asm)
 		{
-#if STATIC_COMPILER || STUB_GENERATOR
+#if STATIC_COMPILER || STUB_GENERATOR || NOEMIT
 			return false;
 #elif NET_4_0
 			return asm.IsDynamic;

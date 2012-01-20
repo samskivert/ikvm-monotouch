@@ -29,7 +29,9 @@ using IKVM.Reflection.Emit;
 using Type = IKVM.Reflection.Type;
 #else
 using System.Reflection;
+#if !NOEMIT
 using System.Reflection.Emit;
+#endif
 #endif
 using System.Diagnostics;
 using System.Security;
@@ -510,7 +512,7 @@ namespace IKVM.Internal
 				}
 #endif
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 				protected override void EmitGetImpl(CodeEmitter ilgen)
 				{
 #if STATIC_COMPILER
@@ -1066,6 +1068,7 @@ namespace IKVM.Internal
 						this.type = type;
 					}
 
+#if !NOEMIT
 					internal override void ApplyReturnValue(ClassLoaderWrapper loader, MethodBuilder mb, ref ParameterBuilder pb, object annotation)
 					{
 						// TODO make sure the descriptor is correct
@@ -1123,6 +1126,7 @@ namespace IKVM.Internal
 					internal override void Apply(ClassLoaderWrapper loader, PropertyBuilder pb, object annotation)
 					{
 					}
+#endif
 				}
 
 				internal override Annotation Annotation
@@ -1219,6 +1223,7 @@ namespace IKVM.Internal
 						return new object[0];
 					}
 
+#if !NOEMIT
 					internal override void Apply(ClassLoaderWrapper loader, MethodBuilder mb, object annotation)
 					{
 						Annotation annot = type.Annotation;
@@ -1281,6 +1286,7 @@ namespace IKVM.Internal
 							annot.Apply(loader, pb, ann);
 						}
 					}
+#endif
 				}
 
 				internal override Annotation Annotation
@@ -1408,6 +1414,7 @@ namespace IKVM.Internal
 					this.type = type;
 				}
 
+#if !NOEMIT
 				private CustomAttributeBuilder MakeCustomAttributeBuilder(ClassLoaderWrapper loader, object annotation)
 				{
 					object[] arr = (object[])annotation;
@@ -1632,6 +1639,7 @@ namespace IKVM.Internal
 						pb.SetCustomAttribute(MakeCustomAttributeBuilder(loader, annotation));
 					}
 				}
+#endif
 			}
 
 			internal override Annotation Annotation
@@ -1711,7 +1719,9 @@ namespace IKVM.Internal
 			Debug.Assert(!(type.IsByRef), type.FullName);
 			Debug.Assert(!(type.IsPointer), type.FullName);
 			Debug.Assert(!(type.Name.EndsWith("[]")), type.FullName);
+#if !NOEMIT
 			Debug.Assert(!(type is TypeBuilder), type.FullName);
+#endif
 			Debug.Assert(!(AttributeHelper.IsJavaModule(type.Module)));
 
 			this.type = type;
@@ -1746,7 +1756,7 @@ namespace IKVM.Internal
 				this.iface = iface;
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			internal override bool EmitIntrinsic(EmitIntrinsicContext context)
 			{
 				TypeWrapper targetType = context.GetStackTypeWrapper(0, 0);
@@ -1796,7 +1806,7 @@ namespace IKVM.Internal
 #endif
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			protected override void CallImpl(CodeEmitter ilgen)
 			{
 				MethodBase mb = GetMethod();
@@ -1855,7 +1865,7 @@ namespace IKVM.Internal
 			{
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			internal override void EmitCall(CodeEmitter ilgen)
 			{
 				// We don't actually need to do anything here!
@@ -1875,7 +1885,7 @@ namespace IKVM.Internal
 				underlyingType = EnumHelper.GetUnderlyingType(tw.type);
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			protected override void EmitGetImpl(CodeEmitter ilgen)
 			{
 				// NOTE if the reference on the stack is null, we *want* the NullReferenceException, so we don't use TypeWrapper.EmitUnbox
@@ -1903,7 +1913,7 @@ namespace IKVM.Internal
 			{
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			internal override void EmitNewobj(CodeEmitter ilgen)
 			{
 				CodeEmitterLocal local = ilgen.DeclareLocal(DeclaringType.TypeAsTBD);
@@ -1920,7 +1930,7 @@ namespace IKVM.Internal
 			{
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			internal override void EmitCall(CodeEmitter ilgen)
 			{
 				ilgen.Emit(OpCodes.Pop);
@@ -1940,7 +1950,7 @@ namespace IKVM.Internal
 			{
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			internal override void EmitCall(CodeEmitter ilgen)
 			{
 				ilgen.Emit(OpCodes.Dup);
@@ -2232,7 +2242,7 @@ namespace IKVM.Internal
 				this.m = m;
 			}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 			internal override void EmitCall(CodeEmitter ilgen)
 			{
 				// we direct EmitCall to EmitCallvirt, because we always want to end up at the instancehelper method
@@ -2589,7 +2599,7 @@ namespace IKVM.Internal
 			}
 		}
 
-#if !STUB_GENERATOR
+#if !STUB_GENERATOR && !NOEMIT
 		internal override void EmitInstanceOf(TypeWrapper context, CodeEmitter ilgen)
 		{
 			if (IsRemapped)

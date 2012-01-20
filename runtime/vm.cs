@@ -48,7 +48,9 @@ namespace IKVM.Internal
 	
 		public static void SaveDebugImage()
 		{
+#if !NOEMIT
 			DynamicClassLoader.SaveDebugImages();
+#endif
 		}
 
 #if !FIRST_PASS

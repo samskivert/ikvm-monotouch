@@ -28,7 +28,9 @@ using IKVM.Reflection.Emit;
 using Type = IKVM.Reflection.Type;
 #else
 using System.Reflection;
+#if !NOEMIT
 using System.Reflection.Emit;
+#endif
 #endif
 using System.IO;
 using System.Collections.Generic;
@@ -54,7 +56,9 @@ namespace IKVM.Internal
 #if !STUB_GENERATOR
 	abstract class TypeWrapperFactory
 	{
+#if !NOEMIT
 		internal abstract ModuleBuilder ModuleBuilder { get; }
+#endif
 		internal abstract TypeWrapper DefineClassImpl(Dictionary<string, TypeWrapper> types, ClassFile f, ClassLoaderWrapper classLoader, object protectionDomain);
 		internal abstract bool ReserveName(string name);
 		internal abstract Type DefineUnloadable(string name);
@@ -294,6 +298,9 @@ namespace IKVM.Internal
 #if !STUB_GENERATOR
 		internal TypeWrapper DefineClass(ClassFile f, object protectionDomain)
 		{
+#if NOEMIT
+            throw new InvalidOperationException();
+#else
 			string dotnetAssembly = f.IKVMAssemblyAttribute;
 			if(dotnetAssembly != null)
 			{
@@ -371,6 +378,7 @@ namespace IKVM.Internal
 				}
 			}
 			return factory;
+#endif // !NOEMIT
 		}
 #endif // !STUB_GENERATOR
 
@@ -1254,7 +1262,7 @@ namespace IKVM.Internal
 			{
 				// HACK keep the compiler from warning about unused local
 				GC.KeepAlive(x);
-#if !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR
+#if !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR && !NOEMIT
 				if(Tracer.ClassLoading.TraceError)
 				{
 					java.lang.ClassLoader cl = (java.lang.ClassLoader)classLoader.GetJavaClassLoader();

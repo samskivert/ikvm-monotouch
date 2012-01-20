@@ -28,7 +28,9 @@ using IKVM.Reflection.Emit;
 using Type = IKVM.Reflection.Type;
 #else
 using System.Reflection;
+#if !NOEMIT
 using System.Reflection.Emit;
+#endif
 #endif
 using System.Diagnostics;
 
@@ -60,12 +62,20 @@ namespace IKVM.Internal
 			{
 				classLiteralField = classLiteralType.GetField("Value", BindingFlags.Public | BindingFlags.Static);
 			}
+#if !NOEMIT
 			return TypeBuilder.GetField(classLiteralType.MakeGenericType(type), classLiteralField);
+#else
+            return null;
+#endif
 		}
 
 		private static bool IsTypeBuilder(Type type)
 		{
+#if !NOEMIT
 			return type is TypeBuilder || (type.HasElementType && IsTypeBuilder(type.GetElementType()));
+#else
+            return false;
+#endif
 		}
 
 #if STATIC_COMPILER
