@@ -8,7 +8,10 @@
         <property name="pathsep" value=";" />
     </if>
 
+<!--
     <target name="all" depends="classes rmi vfs resources core">
+-->
+    <target name="all" depends="classes vfs resources core">
     </target>
 
     <target name="version">
@@ -38,7 +41,11 @@
                     <include name="IKVM.Reflection.dll" asis="true" />
                 </references>
             </csc>
-            <exec program="GenerateSystemCore.exe" useruntimeengine="true" />
+            <exec program="GenerateSystemCore.exe" useruntimeengine="true">
+              <environment>
+                <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+              </environment>
+            </exec>
             <delete>
                 <fileset basedir=".">
                     <include name="IKVM.Reflection.dll"/>
@@ -70,12 +77,38 @@
                 <include name="IKVM.Runtime.jar" />
             </fileset>
         </delete>
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap mscorlib" useruntimeengine="true" />
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System" useruntimeengine="true" />
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System.Core" useruntimeengine="true" />
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System.Data" useruntimeengine="true" />
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System.Drawing" useruntimeengine="true" />
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap ../bin/IKVM.Runtime.dll" useruntimeengine="true" />
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap mscorlib" useruntimeengine="true">
+          <environment>
+            <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+          </environment>
+        </exec>
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System" useruntimeengine="true">
+          <environment>
+            <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+          </environment>
+        </exec>
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System.Core" useruntimeengine="true">
+          <environment>
+            <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+          </environment>
+        </exec>
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System.Data" useruntimeengine="true">
+          <environment>
+            <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+          </environment>
+        </exec>
+<!--
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System.Drawing" useruntimeengine="true">
+          <environment>
+            <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+          </environment>
+        </exec>
+-->
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap ../bin/IKVM.Runtime.dll" useruntimeengine="true">
+          <environment>
+            <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+          </environment>
+        </exec>
         <property name="IKVM.Runtime" value="IKVM.Runtime" />
         <if test="${signoption != ''}">
             <loadfile file="../tools/pubkey.txt" property="publickey" />
@@ -169,8 +202,13 @@
 
     <target name="core" depends="version response.gen.txt">
         <copy file="../bin/IKVM.Runtime.dll" todir="." />
+<!--
         <copy file="../bin/IKVM.AWT.WinForms.dll" todir="." />
+-->
         <exec program="${project::get-base-directory()}/../bin/ikvmc.exe" useruntimeengine="true">
+            <environment>
+              <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+            </environment>
             <arg value="-version:${VERSION}" />
             <arg value="${signoption}" />
             <arg value="-compressresources" />
@@ -223,6 +261,9 @@
         <!-- generate stubs for the public Java APIs we expose -->
         <mkdir dir="../lib" />
         <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" useruntimeengine="true">
+            <environment>
+              <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+            </environment>
             <arg value="-out:../lib/ikvm-api.jar" />
             <arg value="../bin/IKVM.OpenJDK.Core.dll" />
             <arg value="-namespace:ikvm.io" />
@@ -243,6 +284,9 @@
 
     <target name="tools" depends="version tools.gen.rsp">
         <exec program="${project::get-base-directory()}/../bin/ikvmc.exe" useruntimeengine="true">
+            <environment>
+              <variable name="MONO_PATH" value="/Developer/MonoTouch/usr/lib/mono/2.1"/>
+            </environment>
             <arg value="-version:${VERSION}" />
             <arg value="${signoption}" />
             <arg value="@tools.gen.rsp" />
