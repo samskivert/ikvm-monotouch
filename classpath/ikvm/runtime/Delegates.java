@@ -44,6 +44,12 @@ public final class Delegates
     public static final class RunnableDelegate extends MulticastDelegate implements Runnable
     {
         public RunnableDelegate(Method m) { }
+        // TEMP: work around Mono AOT compiler bug
+        public cli.System.IAsyncResult BeginInvoke(cli.System.AsyncCallback cb, Object arg) {
+            return null;
+        }
+        public void EndInvoke(cli.System.IAsyncResult r) {}
+        // END TEMP
         public native void Invoke();
         public interface Method
         {
@@ -58,6 +64,14 @@ public final class Delegates
     public static final class PrivilegedActionDelegate extends MulticastDelegate implements PrivilegedAction
     {
         public PrivilegedActionDelegate(Method m) { }
+        // TEMP: work around Mono AOT compiler bug
+        public cli.System.IAsyncResult BeginInvoke(cli.System.AsyncCallback cb, Object arg) {
+            return null;
+        }
+        public Object EndInvoke(cli.System.IAsyncResult r) {
+            return null;
+        }
+        // END TEMP
         public native Object Invoke();
         public interface Method
         {
