@@ -1,3 +1,12 @@
+*.class
+*.dll
+*.dll.mdb
+*.exe
+*.jar
 CommonAssemblyInfo.cs
-openjdk/java/lang/PropertyConstants.java
 bin
+openjdk/AssemblyInfo.java
+openjdk/java/lang/PropertyConstants.java
+openjdk/resources.zip
+openjdk/vfs.zip
+tools/pubkey.txt
