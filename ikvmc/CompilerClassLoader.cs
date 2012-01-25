@@ -178,6 +178,16 @@ namespace IKVM.Internal
 
 		protected override TypeWrapper LoadClassImpl(string name, bool throwClassNotFoundException)
 		{
+// TEMP: fix for mishandling of generic delegate $Method inner-interfaces
+			if (name.EndsWith(DotNetTypeWrapper.DelegateInterfaceSuffix)) {
+				TypeWrapper outer = LoadClassImpl(name.Substring(0, name.Length - DotNetTypeWrapper.DelegateInterfaceSuffix.Length), throwClassNotFoundException);
+				if (outer != null && outer.IsFakeTypeContainer) {
+					foreach (TypeWrapper tw in outer.InnerClasses) {
+						if (tw.Name == name) return tw;
+					}
+				}
+			}
+// END TEMP
 			foreach(AssemblyClassLoader acl in referencedAssemblies)
 			{
 				TypeWrapper tw = acl.DoLoad(name);
