@@ -7790,7 +7790,7 @@ namespace IKVM.NativeCode.sun.reflect
 #if !NOEMIT
 				return new FastMethodAccessorImpl(m, false);
 #else
-				return new MethodAccessorImpl(m);
+				throw new InvalidOperationException("Only support ICustomInvoke method accessors in no-emit mode.");
 #endif
 			}
 #endif
@@ -7819,7 +7819,7 @@ namespace IKVM.NativeCode.sun.reflect
 #if !NOEMIT
 				return new FastConstructorAccessorImpl(cons);
 #else
-				return new ConstructorAccessorImpl(cons);
+				throw new InvalidOperationException("Only support ICustomInvoke ctor accessors in no-emit mode.");
 #endif
 			}
 #endif
