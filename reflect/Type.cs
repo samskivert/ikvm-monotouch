@@ -1599,7 +1599,7 @@ namespace IKVM.Reflection
 					|| this == u.System_Runtime_InteropServices_StructLayoutAttribute
 					|| this == u.System_Runtime_InteropServices_OptionalAttribute
 					|| this == u.System_Runtime_InteropServices_PreserveSigAttribute
-					|| this == u.System_Runtime_InteropServices_ComImportAttribute
+					// || this == u.System_Runtime_InteropServices_ComImportAttribute
 					|| this == u.System_Runtime_CompilerServices_SpecialNameAttribute
 					|| this == u.System_Runtime_CompilerServices_MethodImplAttribute
 					;

@@ -582,10 +582,10 @@ namespace IKVM.Reflection.Emit
 			{
 				attribs |= TypeAttributes.Serializable;
 			}
-			else if (type == u.System_Runtime_InteropServices_ComImportAttribute)
-			{
-				attribs |= TypeAttributes.Import;
-			}
+			// else if (type == u.System_Runtime_InteropServices_ComImportAttribute)
+			// {
+			// 	attribs |= TypeAttributes.Import;
+			// }
 			else if (type == u.System_Runtime_CompilerServices_SpecialNameAttribute)
 			{
 				attribs |= TypeAttributes.SpecialName;

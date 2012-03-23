@@ -31,7 +31,7 @@ namespace IKVM.Reflection.Impl
 {
 	[Guid("7dac8207-d3ae-4c75-9b67-92801a497d44")]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[ComImport]
+	// [ComImport]
 	interface IMetaDataImport
 	{
 		void PlaceHolder_CloseEnum();
@@ -124,7 +124,7 @@ namespace IKVM.Reflection.Impl
 
 	[Guid("ba3fee4c-ecb9-4e41-83b7-183fa41cd859")]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[ComImport]
+	// [ComImport]
 	interface IMetaDataEmit
 	{
 		void PlaceHolder_SetModuleProps();
@@ -180,12 +180,12 @@ namespace IKVM.Reflection.Impl
 
 	[Guid("B01FAFEB-C450-3A4D-BEEC-B4CEEC01E006")]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[ComImport]
+	// [ComImport]
 	internal interface ISymUnmanagedDocumentWriter { }
 
 	[Guid("0b97726e-9e6d-4f05-9a26-424022093caa")]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[ComImport]
+	// [ComImport]
 	[CoClass(typeof(CorSymWriterClass))]
 	interface ISymUnmanagedWriter2
 	{
@@ -236,7 +236,7 @@ namespace IKVM.Reflection.Impl
 	}
 
 	[Guid("108296c1-281e-11d3-bd22-0000f80849bd")]
-	[ComImport]
+	// [ComImport]
 	class CorSymWriterClass { }
 
 	sealed class PdbWriter : ISymbolWriterImpl, IMetaDataEmit, IMetaDataImport
