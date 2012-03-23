@@ -169,7 +169,7 @@
         <if test="${version::get-major(framework::get-version(framework::get-target-framework() )) == 4}">
             <property name="defs" value="${defs};NET_4_0;CLASSGC" />
         </if>
-        <csc noconfig="true" target="library" output="IKVM.Runtime.dll" define="${defs}" unsafe="false" rebuild="true">
+        <csc noconfig="true" target="library" output="IKVM.Runtime.dll" debug="true" define="${defs}" unsafe="false" rebuild="true">
             <sources>
 <!--
                 <include name="atomic.cs" />
@@ -234,5 +234,6 @@
             </references>
         </csc>
         <copy file="IKVM.Runtime.dll" todir="../bin" />
+        <copy file="IKVM.Runtime.dll.mdb" todir="../bin" />
     </target>
 </project>
