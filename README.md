@@ -28,7 +28,7 @@ Mono supports a "moonlight" profile, which I hacked to point to MonoTouch, and g
 build. I'll eventually recreate the steps required to do that hackery in this README, but right now
 I can't remember them.
 
-In addition to this project, you need to check out the `ikvm-openjdk` repository in the same
+In addition to this project, you need to check out the [ikvm-openjdk] repository in the same
 directory that contains the `ikvm-monotouch` checkout. The IKVM build will use the Java source in
 the `ikvm-openjdk` directory during its build.
 
@@ -72,5 +72,6 @@ Questions, comments, and suchlike can be directed to the
 
 [IKVM]: http://www.ikvm.net/
 [MonoTouch]: http://xamarin.com/monotouch/
+[ikvm-openjdk]: https://github.com/samskivert/ikvm-openjdk
 [PlayN]: http://code.google.com/p/playn/
 [LICENSE]: https://raw.github.com/samskivert/ikvm-monotouch/master/LICENSE
