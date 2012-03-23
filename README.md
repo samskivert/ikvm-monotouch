@@ -70,7 +70,7 @@ Contact
 Questions, comments, and suchlike can be directed to the
 [Three Rings Libraries](http://groups.google.com/group/ooo-libs) Google Group.
 
-IKVM: http://www.ikvm.net/
-MonoTouch: http://xamarin.com/monotouch/
-PlayN: http://code.google.com/p/playn/
-LICENSE: https://raw.github.com/samskivert/ikvm-monotouch/master/LICENSE
+[IKVM]: http://www.ikvm.net/
+[MonoTouch]: http://xamarin.com/monotouch/
+[PlayN]: http://code.google.com/p/playn/
+[LICENSE]: https://raw.github.com/samskivert/ikvm-monotouch/master/LICENSE
