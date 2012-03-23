@@ -433,15 +433,30 @@ namespace IKVM.Internal
 					}
 					method = declaringType.TypeAsBaseType.GetMethod(method.Name, types);
 				}
+#if !NOEMIT
 				return new GhostMethodWrapper(declaringType, name, sig, method, returnType, parameterTypes, modifiers, flags);
+#else
+				Console.WriteLine("TODO: wire up slow reflected ghost methods");
+				return new GhostMethodWrapper(declaringType, name, sig, method, returnType, parameterTypes, modifiers, flags);
+#endif
 			}
 			else if(method is ConstructorInfo)
 			{
+#if !NOEMIT
 				return new SmartConstructorMethodWrapper(declaringType, name, sig, (ConstructorInfo)method, parameterTypes, modifiers, flags);
+#else
+				Console.WriteLine("TODO: wire up slow reflected constructors");
+				return new SmartConstructorMethodWrapper(declaringType, name, sig, (ConstructorInfo)method, parameterTypes, modifiers, flags);
+				// return new SlowMethodWrapper(declaringType, name, sig, returnType, parameterTypes, modifiers, flags);
+#endif
 			}
 			else
 			{
+#if !NOEMIT
 				return new SmartCallMethodWrapper(declaringType, name, sig, (MethodInfo)method, returnType, parameterTypes, modifiers, flags, SimpleOpCode.Call, method.IsStatic ? SimpleOpCode.Call : SimpleOpCode.Callvirt);
+#else
+				return new SlowMethodWrapper(declaringType, name, sig, method, returnType, parameterTypes, modifiers, flags);
+#endif
 			}
 		}
 
@@ -1050,6 +1065,32 @@ namespace IKVM.Internal
 			// we're pre-linked (because we pass the signature types to the base constructor)
 			throw new InvalidOperationException();
 		}
+	}
+
+    class SlowMethodWrapper : MethodWrapper, ICustomInvoke
+	{
+		private MethodBase method;
+
+		internal SlowMethodWrapper(TypeWrapper declaringType, string name, string sig, MethodBase method, TypeWrapper returnType, TypeWrapper[] parameterTypes, Modifiers modifiers, MemberFlags flags)
+			: base(declaringType, name, sig, null, returnType, parameterTypes, modifiers, flags)
+		{
+			this.method = method;
+		}
+
+		internal override bool IsDynamicOnly
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+#if !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR
+		object ICustomInvoke.Invoke(object obj, object[] args, ikvm.@internal.CallerID callerID)
+		{
+			return method.Invoke(obj, args);
+		}
+#endif // !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR
 	}
 
 	class SmartMethodWrapper : MethodWrapper
