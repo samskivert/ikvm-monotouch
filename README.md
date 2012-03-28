@@ -22,17 +22,18 @@ These challenges have largely been overcome:
 Building
 --------
 
-Building ikvm-monotouch is currently somewhat challenging because the stock Nant distribution does
-not support MonoTouch's "silverlight" profile out of the box. The NAnt installation that comes with
-Mono supports a "moonlight" profile, which I hacked to point to MonoTouch, and got everything to
-build. I'll eventually recreate the steps required to do that hackery in this README, but right now
-I can't remember them.
+IKVM MonoTouch can (naturally) only be built on a Mac which has MonoTouch installed. Once you've
+installed MonoTouch, you need to create one symlink:
+
+    sudo ln -s /Developer/MonoTouch/usr/lib/mono/2.1 /Library/Frameworks/Mono.framework/Home/lib/mono/2.1
+
+This will point the `moonlight-2.0` profile at the MonoTouch system DLLs.
 
 In addition to this project, you need to check out the [ikvm-openjdk] repository in the same
 directory that contains the `ikvm-monotouch` checkout. The IKVM build will use the Java source in
 the `ikvm-openjdk` directory during its build.
 
-Once you have NAnt properly hacked and `ikvm-openjdk` checked out. You can build things like so:
+Once you have created your symlink and checked out `ikvm-openjdk`, you can build things like so:
 
     nant -t:moonlight-2.0
 
