@@ -28,6 +28,7 @@ using System.Text;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using IKVM.Internal;
+using MonoTouch.ObjCRuntime;
 
 // Java type JNI aliases
 using jboolean = System.SByte;
@@ -80,6 +81,10 @@ namespace IKVM.Runtime
 		internal static volatile bool jvmCreated;
 		internal static volatile bool jvmDestroyed;
 		internal const string METHOD_PTR_FIELD_PREFIX = "__<jniptr>";
+		
+		public static int test() {
+			return 0;
+		}
 
 		internal static bool IsSupportedJniVersion(jint version)
 		{
@@ -243,18 +248,21 @@ namespace IKVM.Runtime
 				{
 					foreach(IntPtr p in loader.GetNativeLibraries())
 					{
+						Console.WriteLine("Trying to load short name: " + shortMethodName);
 						IntPtr pfunc = JniHelper.ikvm_GetProcAddress(p, shortMethodName, sp + 2 * IntPtr.Size);
 						if(pfunc != IntPtr.Zero)
 						{
 							Tracer.Info(Tracer.Jni, "Native method {0}.{1}{2} found in library 0x{3:X} (short)", clazz, name, sig, p.ToInt64());
 							return pfunc;
 						}
+						Console.WriteLine("Trying to load short name: " + shortMethodName);
 						pfunc = JniHelper.ikvm_GetProcAddress(p, longMethodName, sp + 2 * IntPtr.Size);
 						if(pfunc != IntPtr.Zero)
 						{
 							Tracer.Info(Tracer.Jni, "Native method {0}.{1}{2} found in library 0x{3:X} (long)", clazz, name, sig, p.ToInt64());
 							return pfunc;
 						}
+						Console.WriteLine("Loading Failed");
 					}
 				}
 				string msg = string.Format("{0}.{1}{2}", clazz, name, sig);
@@ -310,17 +318,17 @@ namespace IKVM.Runtime
 
 	sealed class JniHelper
 	{
-		[DllImport("ikvm-native")]
+		[DllImport("__Internal")]
 		private static extern IntPtr ikvm_LoadLibrary(string filename);
-		[DllImport("ikvm-native")]
+		[DllImport("__Internal")]
 		private static extern void ikvm_FreeLibrary(IntPtr handle);
-		[DllImport("ikvm-native")]
+		[DllImport("__Internal")]
 		internal static extern IntPtr ikvm_GetProcAddress(IntPtr handle, string name, int argc);
-		[DllImport("ikvm-native")]
+		[DllImport("__Internal")]
 		private unsafe static extern int ikvm_CallOnLoad(IntPtr method, void* jvm, void* reserved);
-		[DllImport("ikvm-native")]
+		[DllImport("__Internal")]
 		internal unsafe static extern void** ikvm_GetJNIEnvVTable();
-		[DllImport("ikvm-native")]
+		[DllImport("__Internal")]
 		internal unsafe static extern void* ikvm_MarshalDelegate(Delegate d);
 
 		private static List<IntPtr> nativeLibraries = new List<IntPtr>();
@@ -341,6 +349,7 @@ namespace IKVM.Runtime
 		private unsafe static long LoadLibrary(string filename, ClassLoaderWrapper loader)
 		{
 			Tracer.Info(Tracer.Jni, "loadLibrary: {0}, class loader: {1}", filename, loader);
+			Console.WriteLine("loading " + filename);
 			lock(JniLock)
 			{
 				IntPtr p = ikvm_LoadLibrary(filename);

@@ -1680,61 +1680,15 @@ public abstract class ClassLoader {
             usr_paths = initializePath(java_library_path);
             sys_paths = initializePath(sun_boot_library_path);
         }
-        if (isAbsolute) {
-            if (loadLibrary0(fromClass, new File(name))) {
-                return;
-            }
-            throw new UnsatisfiedLinkError("Can't load library: " + name);
+        
+        if(!loadLibrary0(fromClass, new File(name))) {
+        	// Oops, it failed
+        	throw new UnsatisfiedLinkError("no " + name + " in java.library.path");
         }
-        if (loader != null) {
-            String libfilename = loader.findLibrary(name);
-            if (libfilename != null) {
-                File libfile = new File(libfilename);
-                if (!libfile.isAbsolute()) {
-                    throw new UnsatisfiedLinkError(
-    "ClassLoader.findLibrary failed to return an absolute path: " + libfilename);
-                }
-                if (loadLibrary0(fromClass, libfile)) {
-                    return;
-                }
-                throw new UnsatisfiedLinkError("Can't load " + libfilename);
-            }
-        }
-        for (int i = 0 ; i < sys_paths.length ; i++) {
-            File libfile = new File(sys_paths[i], System.mapLibraryName(name));
-            if (loadLibrary0(fromClass, libfile)) {
-                return;
-            }
-        }
-        if (loader != null) {
-            for (int i = 0 ; i < usr_paths.length ; i++) {
-                File libfile = new File(usr_paths[i],
-                                        System.mapLibraryName(name));
-                if (loadLibrary0(fromClass, libfile)) {
-                    return;
-                }
-            }
-        }
-        // Oops, it failed
-        throw new UnsatisfiedLinkError("no " + name + " in java.library.path");
     }
 
     private static boolean loadLibrary0(Class fromClass, final File file) {
-        Boolean exists = (Boolean)
-            AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    return new Boolean(file.exists());
-                }
-            });
-        if (!exists.booleanValue()) {
-            return false;
-        }
-        String name;
-        try {
-            name = file.getCanonicalPath();
-        } catch (IOException e) {
-            return false;
-        }
+        String name = file.getName();
         ClassLoader loader =
             (fromClass == null) ? null : fromClass.getClassLoader();
         Vector libs =

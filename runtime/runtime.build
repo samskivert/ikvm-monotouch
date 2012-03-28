@@ -47,6 +47,7 @@
                 <include name="../bin/IKVM.OpenJDK.Core.dll" asis="true" />
                 <include name="../bin/IKVM.Runtime.dll" asis="true" />
                 <include name="${framework::get-assembly-directory(framework::get-target-framework())}/System.dll" />
+                <include name="${framework::get-assembly-directory(framework::get-target-framework())}/monotouch.dll" />
             </references>
         </csc>
         <copy file="IKVM.Runtime.JNI.dll" todir="../bin" />        
