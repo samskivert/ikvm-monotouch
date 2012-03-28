@@ -31,9 +31,9 @@ I can't remember them.
 mzechner: The following steps will make NAnt use MonoTouch as the toolchain for the moonlight-2.0
 profile:
 
-1) Back up  /Library/Framworks/Mono.framework/Home/shared/NAnt/bin/NAnt.exe.config
-2) Replace the NAnt.exe.config in the above directory with the one provided here.
-3) Create a symlink: ln -s /Developer/MonoTouch/usr/lib/mono/2.1 /Library/Frameworks/Mono.framework/Versions/2.10.8/lib/mono/2.1
+  * Back up  /Library/Framworks/Mono.framework/Home/shared/NAnt/bin/NAnt.exe.config
+  * Replace the NAnt.exe.config in the above directory with the one provided here.
+  * Create a symlink: ln -s /Developer/MonoTouch/usr/lib/mono/2.1 /Library/Frameworks/Mono.framework/Versions/2.10.8/lib/mono/2.1
 
 In addition to this project, you need to check out the [ikvm-openjdk] repository in the same
 directory that contains the `ikvm-monotouch` checkout. The IKVM build will use the Java source in
