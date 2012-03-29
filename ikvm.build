@@ -11,7 +11,7 @@
          <call target="managed" />
     </target>
     <target name="managed" depends="clean-managed CommonAssemblyInfo">
-    	<copy file="ICSharpCode.SharpZipLib.dll" tofile="bin/ICSharpCode.SharpZipLib.dll"/>
+        <copy file="ICSharpCode.SharpZipLib.dll" tofile="bin/ICSharpCode.SharpZipLib.dll"/>
         <nant buildfile="tools/tools.build" />
         <nant buildfile="runtime/runtime.build" target="first-pass" />
         <!-- <nant buildfile="awt/awt.build" target="first-pass" /> -->
@@ -25,7 +25,7 @@
         <nant buildfile="ikvm/ikvm.build" />
         <!-- <nant buildfile="awt/awt.build" /> -->
         <nant buildfile="jvm/jvm.build" />
-	<nant buildfile="native/native.build"/>
+        <nant buildfile="native/native.build"/>
     </target>
     <target name="CommonAssemblyInfo">
         <copy file="CommonAssemblyInfo.cs.in" tofile="CommonAssemblyInfo.cs" overwrite="true">
@@ -38,16 +38,9 @@
     </target>
     <target name="clean" depends="clean-managed clean-native" />
     <target name="clean-managed">
+        <delete failonerror="false" dir="bin" />
         <delete failonerror="false">
             <fileset>
-                <include name="bin/IKVM.AWT.WinForms.dll" />
-                <include name="bin/IKVM.Reflection.dll" />
-                <include name="bin/IKVM.Runtime.dll" />
-                <include name="bin/IKVM.Runtime.JNI.dll" />
-                <include name="bin/IKVM.OpenJDK.*.dll" />
-                <include name="bin/ikvm.exe" />
-                <include name="bin/ikvmc.exe" />
-                <include name="bin/ikvmstub.exe" />
                 <include name="bin-x64/JVM.DLL" />
                 <include name="bin-x86/JVM.DLL" />
                 <include name="classpath/**.class" />
@@ -58,7 +51,9 @@
                 <include name="openjdk/AssemblyInfo.java" />
                 <include name="openjdk/response.gen.txt" />
                 <include name="openjdk/tools.gen.rsp" />
+                <include name="openjdk/resources.zip" />
                 <include name="openjdk/vfs.zip" />
+                <include name="openjdk/java/lang/PropertyConstants.java" />
                 <include name="openjdk/**.class" />
                 <include name="runtime/**.dll*" />
                 <include name="tools/asmref.exe" />
@@ -66,13 +61,13 @@
                 <include name="tools/pubkey.exe" />
                 <include name="tools/pubkey.txt" />
                 <include name="tools/updbaseaddresses.exe" />
+                <include name="CommonAssemblyInfo.cs" />
             </fileset>
         </delete>
     </target>
     <target name="clean-native">
         <delete failonerror="false">
             <fileset>
-                <include name="bin/libikvm-native.so" />
                 <include name="bin-x64/ikvm-native.dll" />
                 <include name="bin-x86/ikvm-native.dll" />
                 <include name="native/Release-x64/ikvm-native.dll" />
@@ -81,5 +76,6 @@
                 <include name="native/Release-x86/*.obj" />
             </fileset>
         </delete>
+        <delete failonerror="false" dir="native/ikvm-natives/build" />
     </target>
 </project>
