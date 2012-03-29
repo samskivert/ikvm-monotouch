@@ -80,6 +80,11 @@ namespace IKVM.Runtime
 		internal static volatile bool jvmCreated;
 		internal static volatile bool jvmDestroyed;
 		internal const string METHOD_PTR_FIELD_PREFIX = "__<jniptr>";
+		internal static volatile IntPtr module = IntPtr.Zero;
+		
+		public static int test() {
+			return 0;
+		}
 
 		internal static bool IsSupportedJniVersion(jint version)
 		{
@@ -241,20 +246,20 @@ namespace IKVM.Runtime
 					clazz, name, sig, loader, shortMethodName, longMethodName, sp + 2 * IntPtr.Size);
 				lock(JniHelper.JniLock)
 				{
-					foreach(IntPtr p in loader.GetNativeLibraries())
+					if(module == IntPtr.Zero) {
+						module = JniHelper.ikvm_LoadLibrary(null); // HACKADY HACK
+					}
+					IntPtr pfunc = JniHelper.ikvm_GetProcAddress(module, shortMethodName, sp + 2 * IntPtr.Size);
+					if(pfunc != IntPtr.Zero)
 					{
-						IntPtr pfunc = JniHelper.ikvm_GetProcAddress(p, shortMethodName, sp + 2 * IntPtr.Size);
-						if(pfunc != IntPtr.Zero)
-						{
-							Tracer.Info(Tracer.Jni, "Native method {0}.{1}{2} found in library 0x{3:X} (short)", clazz, name, sig, p.ToInt64());
-							return pfunc;
-						}
-						pfunc = JniHelper.ikvm_GetProcAddress(p, longMethodName, sp + 2 * IntPtr.Size);
-						if(pfunc != IntPtr.Zero)
-						{
-							Tracer.Info(Tracer.Jni, "Native method {0}.{1}{2} found in library 0x{3:X} (long)", clazz, name, sig, p.ToInt64());
-							return pfunc;
-						}
+						Tracer.Info(Tracer.Jni, "Native method {0}.{1}{2} found in library 0x{3:X} (short)", clazz, name, sig, module.ToInt64());
+						return pfunc;
+					}
+					pfunc = JniHelper.ikvm_GetProcAddress(module, longMethodName, sp + 2 * IntPtr.Size);
+					if(pfunc != IntPtr.Zero)
+					{
+						Tracer.Info(Tracer.Jni, "Native method {0}.{1}{2} found in library 0x{3:X} (long)", clazz, name, sig, module.ToInt64());
+						return pfunc;
 					}
 				}
 				string msg = string.Format("{0}.{1}{2}", clazz, name, sig);
@@ -308,20 +313,20 @@ namespace IKVM.Runtime
 		}
 	}
 
-	sealed class JniHelper
+	public sealed class JniHelper
 	{
-		[DllImport("ikvm-native")]
-		private static extern IntPtr ikvm_LoadLibrary(string filename);
-		[DllImport("ikvm-native")]
-		private static extern void ikvm_FreeLibrary(IntPtr handle);
-		[DllImport("ikvm-native")]
-		internal static extern IntPtr ikvm_GetProcAddress(IntPtr handle, string name, int argc);
-		[DllImport("ikvm-native")]
+		[DllImport("__Internal")]
+		public static extern IntPtr ikvm_LoadLibrary(string filename);
+		[DllImport("__Internal")]
+		public static extern void ikvm_FreeLibrary(IntPtr handle);
+		[DllImport("__Internal")]
+		public static extern IntPtr ikvm_GetProcAddress(IntPtr handle, string name, int argc);
+		[DllImport("__Internal")]
 		private unsafe static extern int ikvm_CallOnLoad(IntPtr method, void* jvm, void* reserved);
-		[DllImport("ikvm-native")]
-		internal unsafe static extern void** ikvm_GetJNIEnvVTable();
-		[DllImport("ikvm-native")]
-		internal unsafe static extern void* ikvm_MarshalDelegate(Delegate d);
+		[DllImport("__Internal")]
+		public unsafe static extern void** ikvm_GetJNIEnvVTable();
+		[DllImport("__Internal")]
+		public unsafe static extern void* ikvm_MarshalDelegate(Delegate d);
 
 		private static List<IntPtr> nativeLibraries = new List<IntPtr>();
 		internal static readonly object JniLock = new object();

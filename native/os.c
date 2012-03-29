@@ -56,31 +56,24 @@
 #endif
 	}
 #else
-	#include <gmodule.h>
 	#include <sys/types.h>
 	#include <sys/mman.h>
+    #include <dlfcn.h>
 	#include "jni.h"
 
 	JNIEXPORT void* JNICALL ikvm_LoadLibrary(char* psz)
 	{
-		return g_module_open(psz, 0);
+		return dlopen(0, 0);
 	}
 
-	JNIEXPORT void JNICALL ikvm_FreeLibrary(GModule* handle)
+	JNIEXPORT void JNICALL ikvm_FreeLibrary(void* handle)
 	{
-		g_module_close(handle);
+        // nop
 	}
 
-	JNIEXPORT void* JNICALL ikvm_GetProcAddress(GModule* handle, char* name, jint argc)
+	JNIEXPORT void* JNICALL ikvm_GetProcAddress(void* handle, char* name, jint argc)
 	{
-		void *symbol;
-
-		gboolean res = g_module_symbol(handle, name, &symbol);
-
-		if (res)
-			return symbol;
-		else
-			return NULL;
+		return dlsym(handle, name);
 	}
 
 	JNIEXPORT void* JNICALL ikvm_mmap(int fd, jboolean writeable, jboolean copy_on_write, jlong position, jint size)

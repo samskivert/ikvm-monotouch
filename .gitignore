@@ -10,3 +10,4 @@ openjdk/java/lang/PropertyConstants.java
 openjdk/resources.zip
 openjdk/vfs.zip
 tools/pubkey.txt
+native/ikvm-natives/build/

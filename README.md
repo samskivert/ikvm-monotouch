@@ -41,6 +41,16 @@ This will generate all of the IKVM dlls and exes in the `ikvm-monotouch/bin` dir
 version of IKVM can then be used in the normal manner to convert Java bytecode to a dll that can be
 included in a MonoTouch project.
 
+JNI is supported by including the bin/libikvm-natives.a file in your MonoTouch project. The file
+needs to be copied, not linked, otherwise MonoTouch does not pick it up. You have to add the 
+following arguments to IPhone Build -> Additional mtouch arguments:
+
+    -nosymbolstrip -nostrip -cxx -gcc_flags "-L${ProjectDir} -likvm-natives -force_load ${ProjectDir}/libikvm-natives.a"
+
+Your JNI code must use the jni.h file found in native/. Setup an XCode static library project, add your
+JNI files plus a reference to native/jni.h. Then add the static library just like you add the
+libikvm-native.a file (including the mtouch arguments to force link all symbols).
+
 It is not necessary to use this custom project to convert C# dlls to Java stub classes (via
 `ikvmstub.exe`), but you can use it, and save yourself the trouble of installing a standard IKVM
 distribution.
