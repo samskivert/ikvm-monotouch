@@ -1,0 +1,237 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7641AE1C15246AEE00435A0D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7641AE1B15246AEE00435A0D /* Foundation.framework */; };
+		7641AE2B15246B1000435A0D /* jni.c in Sources */ = {isa = PBXBuildFile; fileRef = 7641AE2815246B1000435A0D /* jni.c */; };
+		7641AE2C15246B1000435A0D /* jni.h in Headers */ = {isa = PBXBuildFile; fileRef = 7641AE2915246B1000435A0D /* jni.h */; };
+		7641AE2D15246B1000435A0D /* os.c in Sources */ = {isa = PBXBuildFile; fileRef = 7641AE2A15246B1000435A0D /* os.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7641AE1815246AEE00435A0D /* libikvm-natives.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libikvm-natives.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7641AE1B15246AEE00435A0D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		7641AE1F15246AEE00435A0D /* ikvm-natives-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ikvm-natives-Prefix.pch"; sourceTree = "<group>"; };
+		7641AE2815246B1000435A0D /* jni.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jni.c; path = ../../jni.c; sourceTree = "<group>"; };
+		7641AE2915246B1000435A0D /* jni.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jni.h; path = ../../jni.h; sourceTree = "<group>"; };
+		7641AE2A15246B1000435A0D /* os.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = os.c; path = ../../os.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7641AE1515246AEE00435A0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7641AE1C15246AEE00435A0D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7641AE0D15246AEE00435A0D = {
+			isa = PBXGroup;
+			children = (
+				7641AE1D15246AEE00435A0D /* ikvm-natives */,
+				7641AE1A15246AEE00435A0D /* Frameworks */,
+				7641AE1915246AEE00435A0D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7641AE1915246AEE00435A0D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7641AE1815246AEE00435A0D /* libikvm-natives.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7641AE1A15246AEE00435A0D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7641AE1B15246AEE00435A0D /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7641AE1D15246AEE00435A0D /* ikvm-natives */ = {
+			isa = PBXGroup;
+			children = (
+				7641AE2815246B1000435A0D /* jni.c */,
+				7641AE2915246B1000435A0D /* jni.h */,
+				7641AE2A15246B1000435A0D /* os.c */,
+				7641AE1E15246AEE00435A0D /* Supporting Files */,
+			);
+			path = "ikvm-natives";
+			sourceTree = "<group>";
+		};
+		7641AE1E15246AEE00435A0D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7641AE1F15246AEE00435A0D /* ikvm-natives-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		7641AE1615246AEE00435A0D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7641AE2C15246B1000435A0D /* jni.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		7641AE1715246AEE00435A0D /* ikvm-natives */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7641AE2515246AEE00435A0D /* Build configuration list for PBXNativeTarget "ikvm-natives" */;
+			buildPhases = (
+				7641AE1415246AEE00435A0D /* Sources */,
+				7641AE1515246AEE00435A0D /* Frameworks */,
+				7641AE1615246AEE00435A0D /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ikvm-natives";
+			productName = "ikvm-natives";
+			productReference = 7641AE1815246AEE00435A0D /* libikvm-natives.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7641AE0F15246AEE00435A0D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 7641AE1215246AEE00435A0D /* Build configuration list for PBXProject "ikvm-natives" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7641AE0D15246AEE00435A0D;
+			productRefGroup = 7641AE1915246AEE00435A0D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7641AE1715246AEE00435A0D /* ikvm-natives */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7641AE1415246AEE00435A0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7641AE2B15246B1000435A0D /* jni.c in Sources */,
+				7641AE2D15246B1000435A0D /* os.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		7641AE2315246AEE00435A0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		7641AE2415246AEE00435A0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7641AE2615246AEE00435A0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/ikvm_natives.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ikvm-natives/ikvm-natives-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		7641AE2715246AEE00435A0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/ikvm_natives.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ikvm-natives/ikvm-natives-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7641AE1215246AEE00435A0D /* Build configuration list for PBXProject "ikvm-natives" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7641AE2315246AEE00435A0D /* Debug */,
+				7641AE2415246AEE00435A0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7641AE2515246AEE00435A0D /* Build configuration list for PBXNativeTarget "ikvm-natives" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7641AE2615246AEE00435A0D /* Debug */,
+				7641AE2715246AEE00435A0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7641AE0F15246AEE00435A0D /* Project object */;
+}
