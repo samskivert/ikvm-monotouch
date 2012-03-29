@@ -28,7 +28,6 @@ using System.Text;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using IKVM.Internal;
-using MonoTouch.ObjCRuntime;
 
 // Java type JNI aliases
 using jboolean = System.SByte;
@@ -347,7 +346,6 @@ namespace IKVM.Runtime
 		private unsafe static long LoadLibrary(string filename, ClassLoaderWrapper loader)
 		{
 			Tracer.Info(Tracer.Jni, "loadLibrary: {0}, class loader: {1}", filename, loader);
-			Console.WriteLine("loading " + filename);
 			lock(JniLock)
 			{
 				IntPtr p = ikvm_LoadLibrary(filename);
