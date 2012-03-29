@@ -10,7 +10,7 @@
          <property name="ilasm_signoption" value="/key:@ikvm-key" />
          <call target="managed" />
     </target>
-    <target name="managed" depends="clean-managed CommonAssemblyInfo">
+    <target name="managed" depends="clean-managed CommonAssemblyInfo native">
         <nant buildfile="tools/tools.build" />
         <nant buildfile="runtime/runtime.build" target="first-pass" />
         <!-- <nant buildfile="awt/awt.build" target="first-pass" /> -->
