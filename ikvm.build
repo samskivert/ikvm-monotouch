@@ -11,6 +11,7 @@
          <call target="managed" />
     </target>
     <target name="managed" depends="clean-managed CommonAssemblyInfo native">
+    	<copy file="ICSharpCode.SharpZipLib.dll" tofile="bin/ICSharpCode.SharpZipLib.dll"/>
         <nant buildfile="tools/tools.build" />
         <nant buildfile="runtime/runtime.build" target="first-pass" />
         <!-- <nant buildfile="awt/awt.build" target="first-pass" /> -->
