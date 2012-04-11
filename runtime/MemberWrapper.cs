@@ -445,9 +445,7 @@ namespace IKVM.Internal
 #if !NOEMIT
 				return new SmartConstructorMethodWrapper(declaringType, name, sig, (ConstructorInfo)method, parameterTypes, modifiers, flags);
 #else
-				Console.WriteLine("TODO: wire up slow reflected constructors");
-				return new SmartConstructorMethodWrapper(declaringType, name, sig, (ConstructorInfo)method, parameterTypes, modifiers, flags);
-				// return new SlowMethodWrapper(declaringType, name, sig, returnType, parameterTypes, modifiers, flags);
+				return new SlowMethodWrapper(declaringType, name, sig, method, PrimitiveTypeWrapper.VOID, parameterTypes, modifiers, flags);
 #endif
 			}
 			else
