@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <project name="ikvm-native" default="ikvm-native">
     <target name="ikvm-native">
-        <if test="${platform::is-unix() and environment::get-variable('OS') == 'Darwin'}">
+        <if test="${platform::is-unix() and file::exists('/usr/bin/xcodebuild')}">
             <call target="ikvm-native-macos"/>
         </if>
-        <if test="${platform::is-unix() and environment::get-variable('OS') != 'Darwin'}">
+        <if test="${platform::is-unix() and not file::exists('/usr/bin/xcodebuild')}">
             <call target="ikvm-native-unix"/>
         </if>
         <if test="${platform::is-windows()}">
