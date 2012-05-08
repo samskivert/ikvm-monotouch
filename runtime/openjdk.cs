@@ -6863,8 +6863,10 @@ namespace IKVM.NativeCode.sun.reflect
 
 				private T lazyGet(object obj)
 				{
+#if !NOEMIT
 					if (numInvocations < inflationThreshold)
 					{
+#endif
 						if (fw.IsStatic)
 						{
 							obj = null;
@@ -6887,17 +6889,17 @@ namespace IKVM.NativeCode.sun.reflect
 						}
 						numInvocations++;
 						return (T)fw.GetField().GetValue(obj);
+#if !NOEMIT
 					}
 					else
 					{
 						// FXBUG it appears that a ldsfld/stsfld in a DynamicMethod doesn't trigger the class constructor
 						// and if we didn't use the slow path, we haven't yet initialized the class
 						fw.DeclaringType.RunClassInit();
-#if !NOEMIT
 						getter = (Getter)GenerateFastGetter(typeof(Getter), typeof(T), fw);
-#endif
 						return getter(obj, this);
 					}
+#endif
 				}
 
 				private void lazySet(object obj, T value)
@@ -6908,8 +6910,10 @@ namespace IKVM.NativeCode.sun.reflect
 						fw.DeclaringType.RunClassInit();
 						throw FinalFieldIllegalAccessException(JavaBox(value));
 					}
+#if !NOEMIT
 					if (numInvocations < inflationThreshold)
 					{
+#endif
 						if (fw.IsStatic)
 						{
 							obj = null;
@@ -6933,17 +6937,17 @@ namespace IKVM.NativeCode.sun.reflect
 						}
 						numInvocations++;
 						fw.GetField().SetValue(obj, value);
+#if !NOEMIT
 					}
 					else
 					{
 						// FXBUG it appears that a ldsfld/stsfld in a DynamicMethod doesn't trigger the class constructor
 						// and if we didn't use the slow path, we haven't yet initialized the class
 						fw.DeclaringType.RunClassInit();
-#if !NOEMIT
 						setter = (Setter)GenerateFastSetter(typeof(Setter), typeof(T), fw);
-#endif
 						setter(obj, value, this);
 					}
+#endif
 				}
 
 				protected virtual void CheckValue(T value)
