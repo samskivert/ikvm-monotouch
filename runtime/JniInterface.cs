@@ -315,17 +315,17 @@ namespace IKVM.Runtime
 
 	public sealed class JniHelper
 	{
-		[DllImport("__Internal")]
+                [DllImport("ikvm-native")]
 		public static extern IntPtr ikvm_LoadLibrary(string filename);
-		[DllImport("__Internal")]
+                [DllImport("ikvm-native")]
 		public static extern void ikvm_FreeLibrary(IntPtr handle);
-		[DllImport("__Internal")]
+                [DllImport("ikvm-native")]
 		public static extern IntPtr ikvm_GetProcAddress(IntPtr handle, string name, int argc);
-		[DllImport("__Internal")]
+                [DllImport("ikvm-native")]
 		private unsafe static extern int ikvm_CallOnLoad(IntPtr method, void* jvm, void* reserved);
-		[DllImport("__Internal")]
+                [DllImport("ikvm-native")]
 		public unsafe static extern void** ikvm_GetJNIEnvVTable();
-		[DllImport("__Internal")]
+                [DllImport("ikvm-native")]
 		public unsafe static extern void* ikvm_MarshalDelegate(Delegate d);
 
 		private static List<IntPtr> nativeLibraries = new List<IntPtr>();
