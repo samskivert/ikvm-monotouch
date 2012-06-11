@@ -817,8 +817,23 @@ namespace IKVM.Internal
 		[HideFromJava]
 		internal object InvokeJNI(object obj, object[] args, bool nonVirtual, object callerID)
 		{
-#if FIRST_PASS || NOEMIT
+#if FIRST_PASS
 			return null;
+#else
+#if NOEMIT
+			java.lang.reflect.Method method = (java.lang.reflect.Method)ToMethodOrConstructor(false);
+			sun.reflect.MethodAccessor acc = method.getMethodAccessor();
+			if (acc == null)
+			{
+				acc = (sun.reflect.MethodAccessor)IKVM.NativeCode.sun.reflect.ReflectionFactory.newMethodAccessor(null, method);
+				method.setMethodAccessor(acc);
+			}
+			object val = acc.invoke(obj, args, (ikvm.@internal.CallerID)callerID);
+			if (this.ReturnType.IsPrimitive && this.ReturnType != PrimitiveTypeWrapper.VOID)
+			{
+				val = JVM.Unbox(val);
+			}
+			return val;
 #else
 			if (ReferenceEquals(Name, StringConstants.INIT))
 			{
@@ -922,6 +937,7 @@ namespace IKVM.Internal
 				}
 				return val;
 			}
+#endif
 #endif
 		}
 
