@@ -27,15 +27,28 @@ installed MonoTouch, you need to create one symlink:
 
     sudo ln -s /Developer/MonoTouch/usr/lib/mono/2.1 /Library/Frameworks/Mono.framework/Home/lib/mono/2.1
 
-This will point the `moonlight-2.0` profile at the MonoTouch system DLLs.
+This will point the `moonlight-2.0` profile at the MonoTouch system DLLs. You will also need to
+modify your `/Library/Frameworks/Mono.framework/Home/share/NAnt/bin/NAnt.exe.config` file,
+changing:
+
+    <property name="prefix" value="${pkg-config::get-variable('mono', 'prefix')}" />
+
+on line 2716 to:
+
+    <property name="prefix" value="/Developer/MonoTouch/usr" />
 
 In addition to this project, you need to check out the [ikvm-openjdk] repository in the same
 directory that contains the `ikvm-monotouch` checkout. The IKVM build will use the Java source in
 the `ikvm-openjdk` directory during its build.
 
-Once you have created your symlink and checked out `ikvm-openjdk`, you can build things like so:
+Once you have created your symlink and checked out `ikvm-openjdk`, you must build things in five
+phases (hopefully this will be simplified with a future release of MonoTouch):
 
-    nant -t:moonlight-2.0
+    nant phase1
+    nant -t:moonlight-2.0 phase2
+    nant phase3
+    nant -t:moonlight-2.0 phase4
+    nant phase5
 
 This will generate all of the IKVM dlls and exes in the `ikvm-monotouch/bin` directory. This
 version of IKVM can then be used in the normal manner to convert Java bytecode to a dll that can be
