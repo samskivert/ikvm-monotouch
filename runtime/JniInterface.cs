@@ -1311,6 +1311,7 @@ namespace IKVM.Runtime
 			TlsHack.ManagedJNIEnv = null;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pbyte))]
 		internal static string StringFromOEM(byte* psz)
 		{
 			for(int i = 0;; i++)
@@ -1323,6 +1324,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pbyte))]
 		internal static string StringFromUTF8(byte* psz)
 		{
 			// Sun's modified UTF8 encoding is not compatible with System.Text.Encoding.UTF8,
@@ -1406,11 +1408,13 @@ namespace IKVM.Runtime
 			return argTypes.Length;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int))]
 		internal static jint GetVersion(JNIEnv* pEnv)
 		{
 			return JNI_VERSION_1_6;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_pbyte_IntPtr_psbyte_IntPtr))]
 		internal static jclass DefineClass(JNIEnv* pEnv, byte* name, jobject loader, jbyte* pbuf, jint length)
 		{
 			try
@@ -1443,6 +1447,7 @@ namespace IKVM.Runtime
 			return ClassLoaderWrapper.GetClassLoaderWrapper(java.lang.ClassLoader.getSystemClassLoader());
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_pbyte))]
 		internal static jclass FindClass(JNIEnv* pEnv, byte* pszName)
 		{
 			try
@@ -1481,27 +1486,32 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static jmethodID FromReflectedMethod(JNIEnv* pEnv, jobject method)
 		{
 			return MethodWrapper.FromMethodOrConstructor(pEnv->UnwrapRef(method)).Cookie;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static jfieldID FromReflectedField(JNIEnv* pEnv, jobject field)
 		{
 			return FieldWrapper.FromField(pEnv->UnwrapRef(field)).Cookie;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_IntPtr_sbyte))]
 		internal static jobject ToReflectedMethod(JNIEnv* pEnv, jclass clazz_ignored, jmethodID method, jboolean isStatic)
 		{
 			return pEnv->MakeLocalRef(MethodWrapper.FromCookie(method).ToMethodOrConstructor(true));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static jclass GetSuperclass(JNIEnv* pEnv, jclass sub)
 		{
 			TypeWrapper wrapper = TypeWrapper.FromClass((java.lang.Class)pEnv->UnwrapRef(sub)).BaseTypeWrapper;
 			return pEnv->MakeLocalRef(wrapper == null ? null : wrapper.ClassObject);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr))]
 		internal static jboolean IsAssignableFrom(JNIEnv* pEnv, jclass sub, jclass super)
 		{
 			TypeWrapper w1 = TypeWrapper.FromClass((java.lang.Class)pEnv->UnwrapRef(sub));
@@ -1509,16 +1519,19 @@ namespace IKVM.Runtime
 			return w1.IsAssignableTo(w2) ? JNI_TRUE : JNI_FALSE;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_IntPtr_sbyte))]
 		internal static jobject ToReflectedField(JNIEnv* pEnv, jclass clazz_ignored, jfieldID field, jboolean isStatic)
 		{
 			return pEnv->MakeLocalRef(FieldWrapper.FromCookie(field).ToField(true));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pbyte))]
 		private static void SetPendingException(JNIEnv* pEnv, Exception x)
 		{
 			pEnv->GetManagedJNIEnv().pendingException = ikvm.runtime.Util.mapException(x);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr))]
 		internal static jint Throw(JNIEnv* pEnv, jthrowable throwable)
 		{
 			ManagedJNIEnv env = pEnv->GetManagedJNIEnv();
@@ -1527,6 +1540,7 @@ namespace IKVM.Runtime
 			return JNI_OK;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pbyte))]
 		internal static jint ThrowNew(JNIEnv* pEnv, jclass clazz, byte* msg)
 		{
 			ManagedJNIEnv env = pEnv->GetManagedJNIEnv();
@@ -1563,12 +1577,14 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr))]
 		internal static jthrowable ExceptionOccurred(JNIEnv* pEnv)
 		{
 			ManagedJNIEnv env = pEnv->GetManagedJNIEnv();
 			return pEnv->MakeLocalRef(env.pendingException);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void))]
 		internal static void ExceptionDescribe(JNIEnv* pEnv)
 		{
 			ManagedJNIEnv env = pEnv->GetManagedJNIEnv();
@@ -1587,12 +1603,14 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void))]
 		internal static void ExceptionClear(JNIEnv* pEnv)
 		{
 			ManagedJNIEnv env = pEnv->GetManagedJNIEnv();
 			env.pendingException = null;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_pbyte))]
 		internal static void FatalError(JNIEnv* pEnv, byte* msg)
 		{
 			Console.Error.WriteLine("FATAL ERROR in native method: {0}", msg == null ? "(null)" : StringFromOEM(msg));
@@ -1600,17 +1618,20 @@ namespace IKVM.Runtime
 			Environment.Exit(1);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_int))]
 		internal static jint PushLocalFrame(JNIEnv* pEnv, jint capacity)
 		{
 			return pEnv->GetManagedJNIEnv().PushLocalFrame(capacity);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static jobject PopLocalFrame(JNIEnv* pEnv, jobject result)
 		{
 			ManagedJNIEnv env = pEnv->GetManagedJNIEnv();
 			return env.PopLocalFrame(UnwrapRef(env, result));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static jobject NewGlobalRef(JNIEnv* pEnv, jobject obj)
 		{
 			object o = pEnv->UnwrapRef(obj);
@@ -1633,6 +1654,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr))]
 		internal static void DeleteGlobalRef(JNIEnv* pEnv, jobject obj)
 		{
 			int i = obj.ToInt32();
@@ -1650,27 +1672,32 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr))]
 		internal static void DeleteLocalRef(JNIEnv* pEnv, jobject obj)
 		{
 			pEnv->GetManagedJNIEnv().DeleteLocalRef(obj);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr))]
 		internal static jboolean IsSameObject(JNIEnv* pEnv, jobject obj1, jobject obj2)
 		{
 			return pEnv->UnwrapRef(obj1) == pEnv->UnwrapRef(obj2) ? JNI_TRUE : JNI_FALSE;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static jobject NewLocalRef(JNIEnv* pEnv, jobject obj)
 		{
 			return pEnv->MakeLocalRef(pEnv->UnwrapRef(obj));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_int))]
 		internal static jint EnsureLocalCapacity(JNIEnv* pEnv, jint capacity)
 		{
 			// since we can dynamically grow the local ref table, we'll just return success for any number
 			return JNI_OK;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static jobject AllocObject(JNIEnv* pEnv, jclass clazz)
 		{
 			return AllocObjectImpl(pEnv, TypeWrapper.FromClass((java.lang.Class)pEnv->UnwrapRef(clazz)));
@@ -1767,6 +1794,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jobject NewObjectA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			TypeWrapper wrapper = TypeWrapper.FromClass((java.lang.Class)pEnv->UnwrapRef(clazz));
@@ -1788,11 +1816,13 @@ namespace IKVM.Runtime
 			return obj;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static jclass GetObjectClass(JNIEnv* pEnv, jobject obj)
 		{
 			return pEnv->MakeLocalRef(IKVM.NativeCode.ikvm.runtime.Util.getClassFromObject(pEnv->UnwrapRef(obj)));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr))]
 		internal static jboolean IsInstanceOf(JNIEnv* pEnv, jobject obj, jclass clazz)
 		{
 			// NOTE if clazz is an interface, this is still the right thing to do
@@ -1904,16 +1934,19 @@ namespace IKVM.Runtime
 			return IntPtr.Zero;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_pbyte_pbyte))]
 		internal static jmethodID GetMethodID(JNIEnv* pEnv, jclass clazz, byte* name, byte* sig)
 		{
 			return FindMethodID(pEnv, clazz, name, sig, false);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jobject CallObjectMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue* args)
 		{
 			return pEnv->MakeLocalRef(InvokeHelper(pEnv, obj, methodID, args, false));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr_pjvalue))]
 		internal static jboolean CallBooleanMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, false);
@@ -1924,6 +1957,7 @@ namespace IKVM.Runtime
 			return JNI_FALSE;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr_pjvalue))]
 		internal static jbyte CallByteMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, false);
@@ -1934,6 +1968,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_ushort_IntPtr_IntPtr_pjvalue))]
 		internal static jchar CallCharMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, false);
@@ -1944,6 +1979,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_short_IntPtr_IntPtr_pjvalue))]
 		internal static jshort CallShortMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, false);
@@ -1954,6 +1990,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_IntPtr_pjvalue))]
 		internal static jint CallIntMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, false);
@@ -1964,6 +2001,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_long_IntPtr_IntPtr_pjvalue))]
 		internal static jlong CallLongMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, false);
@@ -1974,6 +2012,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_float_IntPtr_IntPtr_pjvalue))]
 		internal static jfloat CallFloatMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, false);
@@ -1984,6 +2023,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_double_IntPtr_IntPtr_pjvalue))]
 		internal static jdouble CallDoubleMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, false);
@@ -1994,16 +2034,19 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_pjvalue))]
 		internal static void CallVoidMethodA(JNIEnv* pEnv, jobject obj, jmethodID methodID, jvalue*  args)
 		{
 			InvokeHelper(pEnv, obj, methodID, args, false);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jobject CallNonvirtualObjectMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue*  args)
 		{
 			return pEnv->MakeLocalRef(InvokeHelper(pEnv, obj, methodID, args, true));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jboolean CallNonvirtualBooleanMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue*  args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, true);
@@ -2014,6 +2057,7 @@ namespace IKVM.Runtime
 			return JNI_FALSE;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jbyte CallNonvirtualByteMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, true);
@@ -2024,6 +2068,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_ushort_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jchar CallNonvirtualCharMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, true);
@@ -2034,6 +2079,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_short_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jshort CallNonvirtualShortMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, true);
@@ -2044,6 +2090,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jint CallNonvirtualIntMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, true);
@@ -2054,6 +2101,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_long_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jlong CallNonvirtualLongMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, true);
@@ -2064,6 +2112,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_float_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jfloat CallNonvirtualFloatMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, true);
@@ -2074,6 +2123,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_double_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jdouble CallNonvirtualDoubleMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue* args)
 		{
 			object o = InvokeHelper(pEnv, obj, methodID, args, true);
@@ -2084,6 +2134,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static void CallNonvirtualVoidMethodA(JNIEnv* pEnv, jobject obj, jclass clazz, jmethodID methodID, jvalue* args)
 		{
 			InvokeHelper(pEnv, obj, methodID, args, true);
@@ -2138,6 +2189,7 @@ namespace IKVM.Runtime
 			return IntPtr.Zero;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_pbyte_pbyte))]
 		internal static jfieldID GetFieldID(JNIEnv* pEnv, jclass clazz, byte* name, byte* sig)
 		{
 			return FindFieldID(pEnv, clazz, name, sig, false);
@@ -2148,106 +2200,127 @@ namespace IKVM.Runtime
 			return (sun.reflect.FieldAccessor)FieldWrapper.FromCookie(cookie).GetFieldAccessorJNI();
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_IntPtr))]
 		internal static jobject GetObjectField(JNIEnv* pEnv, jobject obj, jfieldID fieldID)
 		{
 			return pEnv->MakeLocalRef(GetFieldAccessor(fieldID).get(pEnv->UnwrapRef(obj)));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr))]
 		internal static jboolean GetBooleanField(JNIEnv* pEnv, jobject obj, jfieldID fieldID)
 		{
 			return GetFieldAccessor(fieldID).getBoolean(pEnv->UnwrapRef(obj)) ? JNI_TRUE : JNI_FALSE;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr))]
 		internal static jbyte GetByteField(JNIEnv* pEnv, jobject obj, jfieldID fieldID)
 		{
 			return (jbyte)GetFieldAccessor(fieldID).getByte(pEnv->UnwrapRef(obj));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_ushort_IntPtr_IntPtr))]
 		internal static jchar GetCharField(JNIEnv* pEnv, jobject obj, jfieldID fieldID)
 		{
 			return (jchar)GetFieldAccessor(fieldID).getChar(pEnv->UnwrapRef(obj));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_short_IntPtr_IntPtr))]
 		internal static jshort GetShortField(JNIEnv* pEnv, jobject obj, jfieldID fieldID)
 		{
 			return (jshort)GetFieldAccessor(fieldID).getShort(pEnv->UnwrapRef(obj));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_IntPtr))]
 		internal static jint GetIntField(JNIEnv* pEnv, jobject obj, jfieldID fieldID)
 		{
 			return (jint)GetFieldAccessor(fieldID).getInt(pEnv->UnwrapRef(obj));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_long_IntPtr_IntPtr))]
 		internal static jlong GetLongField(JNIEnv* pEnv, jobject obj, jfieldID fieldID)
 		{
 			return (jlong)GetFieldAccessor(fieldID).getLong(pEnv->UnwrapRef(obj));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_float_IntPtr_IntPtr))]
 		internal static jfloat GetFloatField(JNIEnv* pEnv, jobject obj, jfieldID fieldID)
 		{
 			return (jfloat)GetFieldAccessor(fieldID).getFloat(pEnv->UnwrapRef(obj));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_double_IntPtr_IntPtr))]
 		internal static jdouble GetDoubleField(JNIEnv* pEnv, jobject obj, jfieldID fieldID)
 		{
 			return (jdouble)GetFieldAccessor(fieldID).getDouble(pEnv->UnwrapRef(obj));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_IntPtr))]
 		internal static void SetObjectField(JNIEnv* pEnv, jobject obj, jfieldID fieldID, jobject val)
 		{
 			GetFieldAccessor(fieldID).set(pEnv->UnwrapRef(obj), pEnv->UnwrapRef(val));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_sbyte))]
 		internal static void SetBooleanField(JNIEnv* pEnv, jobject obj, jfieldID fieldID, jboolean val)
 		{
 			GetFieldAccessor(fieldID).setBoolean(pEnv->UnwrapRef(obj), val != JNI_FALSE);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_sbyte))]
 		internal static void SetByteField(JNIEnv* pEnv, jobject obj, jfieldID fieldID, jbyte val)
 		{
 			GetFieldAccessor(fieldID).setByte(pEnv->UnwrapRef(obj), (byte)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_ushort))]
 		internal static void SetCharField(JNIEnv* pEnv, jobject obj, jfieldID fieldID, jchar val)
 		{
 			GetFieldAccessor(fieldID).setChar(pEnv->UnwrapRef(obj), (char)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_short))]
 		internal static void SetShortField(JNIEnv* pEnv, jobject obj, jfieldID fieldID, jshort val)
 		{
 			GetFieldAccessor(fieldID).setShort(pEnv->UnwrapRef(obj), (short)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_int))]
 		internal static void SetIntField(JNIEnv* pEnv, jobject obj, jfieldID fieldID, jint val)
 		{
 			GetFieldAccessor(fieldID).setInt(pEnv->UnwrapRef(obj), (int)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_long))]
 		internal static void SetLongField(JNIEnv* pEnv, jobject obj, jfieldID fieldID, jlong val)
 		{
 			GetFieldAccessor(fieldID).setLong(pEnv->UnwrapRef(obj), (long)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_float))]
 		internal static void SetFloatField(JNIEnv* pEnv, jobject obj, jfieldID fieldID, jfloat val)
 		{
 			GetFieldAccessor(fieldID).setFloat(pEnv->UnwrapRef(obj), (float)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_double))]
 		internal static void SetDoubleField(JNIEnv* pEnv, jobject obj, jfieldID fieldID, jdouble val)
 		{
 			GetFieldAccessor(fieldID).setDouble(pEnv->UnwrapRef(obj), (double)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_pbyte_pbyte))]
 		internal static jmethodID GetStaticMethodID(JNIEnv* pEnv, jclass clazz, byte* name, byte* sig)
 		{
 			return FindMethodID(pEnv, clazz, name, sig, true);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_IntPtr_pjvalue))]
 		internal static jobject CallStaticObjectMethodA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			return pEnv->MakeLocalRef(InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr_pjvalue))]
 		internal static jboolean CallStaticBooleanMethodA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			object o = InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false);
@@ -2258,6 +2331,7 @@ namespace IKVM.Runtime
 			return JNI_FALSE;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr_pjvalue))]
 		internal static jbyte CallStaticByteMethodA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			object o = InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false);
@@ -2268,6 +2342,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_ushort_IntPtr_IntPtr_pjvalue))]
 		internal static jchar CallStaticCharMethodA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			object o = InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false);
@@ -2278,6 +2353,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_short_IntPtr_IntPtr_pjvalue))]
 		internal static jshort CallStaticShortMethodA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			object o = InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false);
@@ -2288,6 +2364,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_IntPtr_pjvalue))]
 		internal static jint CallStaticIntMethodA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			object o = InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false);
@@ -2298,6 +2375,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_long_IntPtr_IntPtr_pjvalue))]
 		internal static jlong CallStaticLongMethodA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			object o = InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false);
@@ -2308,6 +2386,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_float_IntPtr_IntPtr_pjvalue))]
 		internal static jfloat CallStaticFloatMethodA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			object o = InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false);
@@ -2318,6 +2397,7 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_double_IntPtr_IntPtr_pjvalue))]
 		internal static jdouble CallStaticDoubleMethodA(JNIEnv* pEnv, jclass clazz, jmethodID methodID, jvalue *args)
 		{
 			object o = InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false);
@@ -2328,116 +2408,139 @@ namespace IKVM.Runtime
 			return 0;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_pjvalue))]
 		internal static void CallStaticVoidMethodA(JNIEnv* pEnv, jclass cls, jmethodID methodID, jvalue * args)
 		{
 			InvokeHelper(pEnv, IntPtr.Zero, methodID, args, false);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_pbyte_pbyte))]
 		internal static jfieldID GetStaticFieldID(JNIEnv* pEnv, jclass clazz, byte* name, byte* sig)
 		{
 			return FindFieldID(pEnv, clazz, name, sig, true);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_IntPtr))]
 		internal static jobject GetStaticObjectField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID)
 		{
 			return pEnv->MakeLocalRef(GetFieldAccessor(fieldID).get(null));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr))]
 		internal static jboolean GetStaticBooleanField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID)
 		{
 			return GetFieldAccessor(fieldID).getBoolean(null) ? JNI_TRUE : JNI_FALSE;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte_IntPtr_IntPtr))]
 		internal static jbyte GetStaticByteField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID)
 		{
 			return (jbyte)GetFieldAccessor(fieldID).getByte(null);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_ushort_IntPtr_IntPtr))]
 		internal static jchar GetStaticCharField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID)
 		{
 			return (jchar)GetFieldAccessor(fieldID).getChar(null);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_short_IntPtr_IntPtr))]
 		internal static jshort GetStaticShortField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID)
 		{
 			return (jshort)GetFieldAccessor(fieldID).getShort(null);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_IntPtr))]
 		internal static jint GetStaticIntField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID)
 		{
 			return (jint)GetFieldAccessor(fieldID).getInt(null);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_long_IntPtr_IntPtr))]
 		internal static jlong GetStaticLongField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID)
 		{
 			return (jlong)GetFieldAccessor(fieldID).getLong(null);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_float_IntPtr_IntPtr))]
 		internal static jfloat GetStaticFloatField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID)
 		{
 			return (jfloat)GetFieldAccessor(fieldID).getFloat(null);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_double_IntPtr_IntPtr))]
 		internal static jdouble GetStaticDoubleField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID)
 		{
 			return (jdouble)GetFieldAccessor(fieldID).getDouble(null);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_IntPtr))]
 		internal static void SetStaticObjectField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID, jobject val)
 		{
 			GetFieldAccessor(fieldID).set(null, pEnv->UnwrapRef(val));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_sbyte))]
 		internal static void SetStaticBooleanField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID, jboolean val)
 		{
 			GetFieldAccessor(fieldID).setBoolean(null, val != JNI_FALSE);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_sbyte))]
 		internal static void SetStaticByteField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID, jbyte val)
 		{
 			GetFieldAccessor(fieldID).setByte(null, (byte)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_ushort))]
 		internal static void SetStaticCharField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID, jchar val)
 		{
 			GetFieldAccessor(fieldID).setChar(null, (char)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_short))]
 		internal static void SetStaticShortField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID, jshort val)
 		{
 			GetFieldAccessor(fieldID).setShort(null, (short)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_int))]
 		internal static void SetStaticIntField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID, jint val)
 		{
 			GetFieldAccessor(fieldID).setInt(null, (int)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_long))]
 		internal static void SetStaticLongField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID, jlong val)
 		{
 			GetFieldAccessor(fieldID).setLong(null, (long)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_float))]
 		internal static void SetStaticFloatField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID, jfloat val)
 		{
 			GetFieldAccessor(fieldID).setFloat(null, (float)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_IntPtr_double))]
 		internal static void SetStaticDoubleField(JNIEnv* pEnv, jclass clazz, jfieldID fieldID, jdouble val)
 		{
 			GetFieldAccessor(fieldID).setDouble(null, (double)val);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_pjchar_int))]
 		internal static jstring NewString(JNIEnv* pEnv, jchar* unicode, int len)
 		{
 			return pEnv->MakeLocalRef(new String((char*)unicode, 0, len));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr))]
 		internal static jint GetStringLength(JNIEnv* pEnv, jstring str)
 		{
 			return ((string)pEnv->UnwrapRef(str)).Length;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjchar_IntPtr_pjboolean))]
 		internal static jchar* GetStringChars(JNIEnv* pEnv, jstring str, jboolean* isCopy)
 		{
 			string s = (string)pEnv->UnwrapRef(str);
@@ -2448,21 +2551,25 @@ namespace IKVM.Runtime
 			return (jchar*)(void*)Marshal.StringToHGlobalUni(s);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjchar))]
 		internal static void ReleaseStringChars(JNIEnv* pEnv, jstring str, jchar* chars)
 		{
 			Marshal.FreeHGlobal((IntPtr)(void*)chars);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_pbyte))]
 		internal static jobject NewStringUTF(JNIEnv* pEnv, byte* psz)
 		{
 			return pEnv->MakeLocalRef(StringFromUTF8(psz));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr))]
 		internal static jint GetStringUTFLength(JNIEnv* pEnv, jstring str)
 		{
 			return StringUTF8Length((string)pEnv->UnwrapRef(str));
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pbyte_IntPtr_pjboolean))]
 		internal static byte* GetStringUTFChars(JNIEnv* pEnv, jstring str, jboolean* isCopy)
 		{
 			string s = (string)pEnv->UnwrapRef(str);
@@ -2495,16 +2602,19 @@ namespace IKVM.Runtime
 			return buf;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pbyte))]
 		internal static void ReleaseStringUTFChars(JNIEnv* pEnv, jstring str, byte* chars)
 		{
 			JniMem.Free((IntPtr)(void*)chars);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr))]
 		internal static jsize GetArrayLength(JNIEnv* pEnv, jarray array)
 		{
 			return ((Array)pEnv->UnwrapRef(array)).Length;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_int_IntPtr_IntPtr))]
 		internal static jobject NewObjectArray(JNIEnv* pEnv, jsize len, jclass clazz, jobject init)
 		{
 			try
@@ -2533,6 +2643,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_int))]
 		internal static jobject GetObjectArrayElement(JNIEnv* pEnv, jarray array, jsize index)
 		{
 			try
@@ -2547,6 +2658,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_IntPtr))]
 		internal static void SetObjectArrayElement(JNIEnv* pEnv, jarray array, jsize index, jobject val)
 		{
 			try
@@ -2560,6 +2672,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_int))]
 		internal static jbooleanArray NewBooleanArray(JNIEnv* pEnv, jsize len)
 		{
 			try
@@ -2573,6 +2686,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_int))]
 		internal static jbyteArray NewByteArray(JNIEnv* pEnv, jsize len)
 		{
 			try
@@ -2586,6 +2700,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_int))]
 		internal static jcharArray NewCharArray(JNIEnv* pEnv, jsize len)
 		{
 			try
@@ -2599,6 +2714,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_int))]
 		internal static jshortArray NewShortArray(JNIEnv* pEnv, jsize len)
 		{
 			try
@@ -2612,6 +2728,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_int))]
 		internal static jintArray NewIntArray(JNIEnv* pEnv, jsize len)
 		{
 			try
@@ -2625,6 +2742,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_int))]
 		internal static jlongArray NewLongArray(JNIEnv* pEnv, jsize len)
 		{
 			try
@@ -2638,6 +2756,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_int))]
 		internal static jfloatArray NewFloatArray(JNIEnv* pEnv, jsize len)
 		{
 			try
@@ -2651,6 +2770,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_int))]
 		internal static jdoubleArray NewDoubleArray(JNIEnv* pEnv, jsize len)
 		{
 			try
@@ -2664,6 +2784,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjboolean_IntPtr_pjboolean))]
 		internal static jboolean* GetBooleanArrayElements(JNIEnv* pEnv, jbooleanArray array, jboolean* isCopy)
 		{
 			bool[] b = (bool[])pEnv->UnwrapRef(array);
@@ -2679,6 +2800,7 @@ namespace IKVM.Runtime
 			return p;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjbyte_IntPtr_pjboolean))]
 		internal static jbyte* GetByteArrayElements(JNIEnv* pEnv, jbyteArray array, jboolean* isCopy)
 		{
 			byte[] b = (byte[])pEnv->UnwrapRef(array);
@@ -2694,6 +2816,7 @@ namespace IKVM.Runtime
 			return p;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjchar_IntPtr_pjboolean))]
 		internal static jchar* GetCharArrayElements(JNIEnv* pEnv, jcharArray array, jboolean* isCopy)
 		{
 			char[] b = (char[])pEnv->UnwrapRef(array);
@@ -2706,6 +2829,7 @@ namespace IKVM.Runtime
 			return (jchar*)(void*)buf;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjshort_IntPtr_pjboolean))]
 		internal static jshort* GetShortArrayElements(JNIEnv* pEnv, jshortArray array, jboolean* isCopy)
 		{
 			short[] b = (short[])pEnv->UnwrapRef(array);
@@ -2718,6 +2842,7 @@ namespace IKVM.Runtime
 			return (jshort*)(void*)buf;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjint_IntPtr_pjboolean))]
 		internal static jint* GetIntArrayElements(JNIEnv* pEnv, jintArray array, jboolean* isCopy)
 		{
 			int[] b = (int[])pEnv->UnwrapRef(array);
@@ -2730,6 +2855,7 @@ namespace IKVM.Runtime
 			return (jint*)(void*)buf;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjlong_IntPtr_pjboolean))]
 		internal static jlong* GetLongArrayElements(JNIEnv* pEnv, jlongArray array, jboolean* isCopy)
 		{
 			long[] b = (long[])pEnv->UnwrapRef(array);
@@ -2742,6 +2868,7 @@ namespace IKVM.Runtime
 			return (jlong*)(void*)buf;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjfloat_IntPtr_pjboolean))]
 		internal static jfloat* GetFloatArrayElements(JNIEnv* pEnv, jfloatArray array, jboolean* isCopy)
 		{
 			float[] b = (float[])pEnv->UnwrapRef(array);
@@ -2754,6 +2881,7 @@ namespace IKVM.Runtime
 			return (jfloat*)(void*)buf;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjdouble_IntPtr_pjboolean))]
 		internal static jdouble* GetDoubleArrayElements(JNIEnv* pEnv, jdoubleArray array, jboolean* isCopy)
 		{
 			double[] b = (double[])pEnv->UnwrapRef(array);
@@ -2766,6 +2894,7 @@ namespace IKVM.Runtime
 			return (jdouble*)(void*)buf;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjboolean_int))]
 		internal static void ReleaseBooleanArrayElements(JNIEnv* pEnv, jbooleanArray array, jboolean* elems, jint mode)
 		{
 			if(mode == 0 || mode == JNI_COMMIT)
@@ -2782,6 +2911,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjbyte_int))]
 		internal static void ReleaseByteArrayElements(JNIEnv* pEnv, jbyteArray array, jbyte* elems, jint mode)
 		{
 			if(mode == 0 || mode == JNI_COMMIT)
@@ -2798,6 +2928,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjchar_int))]
 		internal static void ReleaseCharArrayElements(JNIEnv* pEnv, jcharArray array, jchar* elems, jint mode)
 		{
 			if(mode == 0 || mode == JNI_COMMIT)
@@ -2811,6 +2942,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjshort_int))]
 		internal static void ReleaseShortArrayElements(JNIEnv* pEnv, jshortArray array, jshort* elems, jint mode)
 		{
 			if(mode == 0 || mode == JNI_COMMIT)
@@ -2824,6 +2956,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjint_int))]
 		internal static void ReleaseIntArrayElements(JNIEnv* pEnv, jintArray array, jint* elems, jint mode)
 		{
 			if(mode == 0 || mode == JNI_COMMIT)
@@ -2837,6 +2970,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjlong_int))]
 		internal static void ReleaseLongArrayElements(JNIEnv* pEnv, jlongArray array, jlong* elems, jint mode)
 		{
 			if(mode == 0 || mode == JNI_COMMIT)
@@ -2850,6 +2984,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjfloat_int))]
 		internal static void ReleaseFloatArrayElements(JNIEnv* pEnv, jfloatArray array, jfloat* elems, jint mode)
 		{
 			if(mode == 0 || mode == JNI_COMMIT)
@@ -2863,6 +2998,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjdouble_int))]
 		internal static void ReleaseDoubleArrayElements(JNIEnv* pEnv, jdoubleArray array, jdouble* elems, jint mode)
 		{
 			if(mode == 0 || mode == JNI_COMMIT)
@@ -2876,6 +3012,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetBooleanArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -2893,6 +3030,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetByteArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -2910,6 +3048,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetCharArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -2923,6 +3062,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetShortArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -2936,6 +3076,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetIntArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -2949,6 +3090,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetLongArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -2962,6 +3104,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetFloatArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -2975,6 +3118,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetDoubleArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -2988,6 +3132,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void SetBooleanArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -3005,6 +3150,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void SetByteArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -3022,6 +3168,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void SetCharArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -3035,6 +3182,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void SetShortArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -3048,6 +3196,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void SetIntArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -3061,6 +3210,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void SetLongArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -3074,6 +3224,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void SetFloatArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -3087,6 +3238,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void SetDoubleArrayRegion(JNIEnv* pEnv, IntPtr array, int start, int len, IntPtr buf)
 		{
 			try
@@ -3108,6 +3260,7 @@ namespace IKVM.Runtime
 			public void* fnPtr;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pJNINativeMethod_int))]
 		internal static int RegisterNatives(JNIEnv* pEnv, IntPtr clazz, JNINativeMethod* methods, int nMethods)
 		{
 			try
@@ -3148,6 +3301,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr))]
 		internal static int UnregisterNatives(JNIEnv* pEnv, IntPtr clazz)
 		{
 			try
@@ -3178,6 +3332,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr))]
 		internal static int MonitorEnter(JNIEnv* pEnv, IntPtr obj)
 		{
 			try
@@ -3196,6 +3351,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr))]
 		internal static int MonitorExit(JNIEnv* pEnv, IntPtr obj)
 		{
 			try
@@ -3210,12 +3366,14 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_ppJavaVM))]
 		internal static int GetJavaVM(JNIEnv* pEnv, JavaVM **ppJavaVM)
 		{
 			*ppJavaVM = JavaVM.pJavaVM;
 			return JNI_OK;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetStringRegion(JNIEnv* pEnv, IntPtr str, int start, int len, IntPtr buf)
 		{
 			string s = (string)pEnv->UnwrapRef(str);
@@ -3243,6 +3401,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_int_int_IntPtr))]
 		internal static void GetStringUTFRegion(JNIEnv* pEnv, IntPtr str, int start, int len, IntPtr buf)
 		{
 			string s = (string)pEnv->UnwrapRef(str);
@@ -3310,6 +3469,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pvoid_IntPtr_pjboolean))]
 		internal static void* GetPrimitiveArrayCritical(JNIEnv* pEnv, jarray array, jboolean* isCopy)
 		{
 			Array ar = (Array)pEnv->UnwrapRef(array);
@@ -3356,6 +3516,7 @@ namespace IKVM.Runtime
 			}		
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pvoid_int))]
 		internal static void ReleasePrimitiveArrayCritical(JNIEnv* pEnv, jarray array, void* carray, jint mode)
 		{
 			Array ar = (Array)pEnv->UnwrapRef(array);
@@ -3403,6 +3564,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_pjchar_IntPtr_pjboolean))]
 		internal static jchar* GetStringCritical(JNIEnv* pEnv, jstring str, jboolean* isCopy)
 		{
 			string s = (string)pEnv->UnwrapRef(str);
@@ -3418,11 +3580,13 @@ namespace IKVM.Runtime
 			return null;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr_pjchar))]
 		internal static void ReleaseStringCritical(JNIEnv* pEnv, jstring str, jchar* cstring)
 		{
 			Marshal.FreeHGlobal((IntPtr)(void*)cstring);
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static jweak NewWeakGlobalRef(JNIEnv* pEnv, jobject obj)
 		{
 			object o = pEnv->UnwrapRef(obj);
@@ -3449,6 +3613,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_void_IntPtr))]
 		internal static void DeleteWeakGlobalRef(JNIEnv* pEnv, jweak obj)
 		{
 			int i = obj.ToInt32();
@@ -3467,12 +3632,14 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_sbyte))]
 		internal static jboolean ExceptionCheck(JNIEnv* pEnv)
 		{
 			ManagedJNIEnv env = pEnv->GetManagedJNIEnv();
 			return env.pendingException != null ? JNI_TRUE : JNI_FALSE;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr_long))]
 		internal static jobject NewDirectByteBuffer(JNIEnv* pEnv, IntPtr address, jlong capacity)
 		{
 			try
@@ -3491,6 +3658,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_IntPtr_IntPtr))]
 		internal static IntPtr GetDirectBufferAddress(JNIEnv* pEnv, jobject buf)
 		{
 			try
@@ -3503,7 +3671,8 @@ namespace IKVM.Runtime
 				return IntPtr.Zero;
 			}
 		}
-		
+
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_long_IntPtr))]
 		internal static jlong GetDirectBufferCapacity(JNIEnv* pEnv, jobject buf)
 		{
 			try
@@ -3517,6 +3686,7 @@ namespace IKVM.Runtime
 			}
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr))]
 		internal static int GetObjectRefType(JNIEnv* pEnv, jobject obj)
 		{
 			int i = obj.ToInt32();
@@ -3554,6 +3724,7 @@ namespace IKVM.Runtime
 			return null;
 		}
 
+		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pbyte))]
 		internal static object UnwrapRef(ManagedJNIEnv env, IntPtr o)
 		{
 			int i = o.ToInt32();
