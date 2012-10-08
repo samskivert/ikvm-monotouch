@@ -46,6 +46,7 @@
             <references>
                 <include name="../bin/IKVM.OpenJDK.Core.dll" asis="true" />
                 <include name="../bin/IKVM.Runtime.dll" asis="true" />
+		<include name="/Developer/MonoTouch/usr/lib/mono/2.1/monotouch.dll" asis="true"/>
                 <include name="${framework::get-assembly-directory(framework::get-target-framework())}/System.dll" />
             </references>
         </csc>
