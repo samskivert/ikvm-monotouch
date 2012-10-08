@@ -1311,7 +1311,6 @@ namespace IKVM.Runtime
 			TlsHack.ManagedJNIEnv = null;
 		}
 
-		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pbyte))]
 		internal static string StringFromOEM(byte* psz)
 		{
 			for(int i = 0;; i++)
@@ -1324,7 +1323,6 @@ namespace IKVM.Runtime
 			}
 		}
 
-		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pbyte))]
 		internal static string StringFromUTF8(byte* psz)
 		{
 			// Sun's modified UTF8 encoding is not compatible with System.Text.Encoding.UTF8,
@@ -1525,7 +1523,6 @@ namespace IKVM.Runtime
 			return pEnv->MakeLocalRef(FieldWrapper.FromCookie(field).ToField(true));
 		}
 
-		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pbyte))]
 		private static void SetPendingException(JNIEnv* pEnv, Exception x)
 		{
 			pEnv->GetManagedJNIEnv().pendingException = ikvm.runtime.Util.mapException(x);
@@ -3724,7 +3721,6 @@ namespace IKVM.Runtime
 			return null;
 		}
 
-		[MonoTouch.MonoPInvokeCallback (typeof(VtableBuilder.pf_int_IntPtr_pbyte))]
 		internal static object UnwrapRef(ManagedJNIEnv env, IntPtr o)
 		{
 			int i = o.ToInt32();
