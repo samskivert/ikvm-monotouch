@@ -43,6 +43,8 @@ assembly.class
     java/util/concurrent/locks/*.class
     gnu/java/util/*.class
     sun/misc/*.class
+    sun/net/www/protocol/file/*.class
+    sun/net/www/protocol/ikvmres/*.class
     sun/nio/ch/*.class
     sun/nio/cs/*.class
     sun/reflect/*.class
@@ -119,13 +121,13 @@ assembly.class
 }
 {
     -out:IKVM.OpenJDK.Charsets.dll
-    -baseaddress:0x56750000
+    -baseaddress:0x56780000
     @OPENJDK@/jdk/src/share/classes/sun/io/*.class
     @OPENJDK@/jdk/src/share/classes/sun/nio/cs/ext/*.class
 }
 {
     -out:IKVM.OpenJDK.Util.dll
-    -baseaddress:0x57590000
+    -baseaddress:0x575C0000
     -recurse:@OPENJDK@/build/linux-amd64/j2re-image/lib/resources.jar/com/sun/java/util/jar/pack/intrinsic.properties
     java/util/zip/*.class
     @OPENJDK@/build/linux-amd64/gensrc/sun/util/resources/*.class
@@ -139,7 +141,7 @@ assembly.class
 }
 {
     -out:IKVM.OpenJDK.Text.dll
-    -baseaddress:0x57980000
+    -baseaddress:0x579B0000
     -recurse:@OPENJDK@/build/linux-amd64/j2re-image/lib/resources.jar/sun/text/*
     @OPENJDK@/jdk/src/share/classes/java/text/*.class
     @OPENJDK@/jdk/src/share/classes/java/text/spi/*.class
@@ -149,7 +151,7 @@ assembly.class
 }
 {
     -out:IKVM.OpenJDK.Misc.dll
-    -baseaddress:0x57B30000
+    -baseaddress:0x57B60000
     @OPENJDK@/build/linux-amd64/impsrc/javax/annotation/*.class
     @OPENJDK@/jdk/src/share/classes/sun/io/ByteToCharASCII.class
     @OPENJDK@/jdk/src/share/classes/sun/io/ByteToCharConverter.class
@@ -214,6 +216,6 @@ assembly.class
 }
 {
     -out:IKVM.OpenJDK.Beans.dll
-    -baseaddress:0x57B60000
+    -baseaddress:0x57B90000
     @OPENJDK@/jdk/src/share/classes/java/beans/*.class
 }
