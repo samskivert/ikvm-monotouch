@@ -351,6 +351,11 @@ namespace IKVM.Internal
 			{
 			}
 
+			internal override Modifiers ReflectiveModifiers
+			{
+				get { return Modifiers | Modifiers.Static; }
+			}
+
 			internal sealed override bool IsFakeNestedType
 			{
 				get { return true; }
