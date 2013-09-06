@@ -1929,11 +1929,11 @@ namespace IKVM.Internal
 							paramTypes[i] = paramInfo[i].ParameterType;
 						}
 						PropertyBuilder pb = typeBuilder.DefineProperty(pi.Name, PropertyAttributes.None, pi.PropertyType, paramTypes);
-						if(pi.CanRead)
+						if(pi.CanRead && pi.GetGetMethod() != null) // ikvm-monotouch fix/hack?
 						{
 							pb.SetGetMethod((MethodBuilder)methods[MakeMethodKey(pi.GetGetMethod())]);
 						}
-						if(pi.CanWrite)
+						if(pi.CanWrite && pi.GetSetMethod() != null) // ikvm-monotouch fix/hack?
 						{
 							pb.SetSetMethod((MethodBuilder)methods[MakeMethodKey(pi.GetSetMethod())]);
 						}
