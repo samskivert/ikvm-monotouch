@@ -22,33 +22,19 @@ These challenges have largely been overcome:
 Building
 --------
 
-IKVM MonoTouch can (naturally) only be built on a Mac which has MonoTouch installed. Once you've
-installed MonoTouch, you need to create one symlink:
-
-    sudo ln -s /Developer/MonoTouch/usr/lib/mono/2.1 /Library/Frameworks/Mono.framework/Home/lib/mono/2.1
-
-This will point the `moonlight-2.0` profile at the MonoTouch system DLLs. You will also need to
-modify your `/Library/Frameworks/Mono.framework/Home/share/NAnt/bin/NAnt.exe.config` file,
-changing:
-
-    <property name="prefix" value="${pkg-config::get-variable('mono', 'prefix')}" />
-
-on line 2716 to:
-
-    <property name="prefix" value="/Developer/MonoTouch/usr" />
+IKVM MonoTouch can (naturally) only be built on a Mac which has MonoTouch installed. You also need
+to install [NAnt](http://nant.sourceforge.net/) (as it's no longer bundled with MonoTouch). Once
+you've installed NAnt, you need to patch your `bin/NAnt.exe.config` file using the
+`NAnt.exe.config.patch` in the top-level directory of ikvm-monotouch.
 
 In addition to this project, you need to check out the [ikvm-openjdk] repository in the same
 directory that contains the `ikvm-monotouch` checkout. The IKVM build will use the Java source in
 the `ikvm-openjdk` directory during its build.
 
-Once you have created your symlink and checked out `ikvm-openjdk`, you must build things in five
-phases (hopefully this will be simplified with a future release of MonoTouch):
+Once you have created your symlink and checked out `ikvm-openjdk`, you can build everything using
+the `build.sh` script:
 
-    nant phase1
-    nant -t:moonlight-2.0 phase2
-    nant phase3
-    nant -t:moonlight-2.0 phase4
-    nant phase5
+    ./build.sh
 
 This will generate all of the IKVM dlls and exes in the `ikvm-monotouch/bin` directory. This
 version of IKVM can then be used in the normal manner to convert Java bytecode to a dll that can be
@@ -60,8 +46,8 @@ following arguments to IPhone Build -> Additional mtouch arguments:
 
     -nosymbolstrip -nostrip -cxx -gcc_flags "-L${ProjectDir} -likvm-natives -force_load ${ProjectDir}/libikvm-natives.a"
 
-Your JNI code must use the jni.h file found in native/. Setup an XCode static library project, add your
-JNI files plus a reference to native/jni.h. Then add the static library just like you add the
+Your JNI code must use the jni.h file found in native/. Setup an XCode static library project, add
+your JNI files plus a reference to native/jni.h. Then add the static library just like you add the
 libikvm-native.a file (including the mtouch arguments to force link all symbols).
 
 It is not necessary to use this custom project to convert C# dlls to Java stub classes (via
