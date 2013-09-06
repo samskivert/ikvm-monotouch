@@ -17,7 +17,6 @@
     <target name="version">
         <property name="VERSION" value="${assemblyname::get-version(assemblyname::get-assembly-name(path::combine(project::get-base-directory(), '../bin/IKVM.Runtime.dll')))}" />
         <property name="OPENJDK_VERSION" value="OpenJDK 6 b22" />
-        <property name="MTPATH" value="/Developer/MonoTouch/usr/lib/mono/2.1" />
     </target>
 
     <target name="allsources.gen.lst">
@@ -74,14 +73,14 @@
                 <include name="IKVM.Runtime.jar" />
             </fileset>
         </delete>
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap -nostdlib -lib:${MTPATH} mscorlib" useruntimeengine="true" />
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap -nostdlib -lib:${MTPATH} System" useruntimeengine="true" />
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap -nostdlib -lib:${MTPATH} System.Core" useruntimeengine="true" />
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap -nostdlib -lib:${MTPATH} System.Data" useruntimeengine="true" />
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap mscorlib" useruntimeengine="true" />
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System" useruntimeengine="true" />
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System.Core" useruntimeengine="true" />
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System.Data" useruntimeengine="true" />
 <!--
         <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap System.Drawing" useruntimeengine="true" />
 -->
-        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap -nostdlib -lib:${MTPATH} ../bin/IKVM.Runtime.dll" useruntimeengine="true" />
+        <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" commandline="-bootstrap ../bin/IKVM.Runtime.dll" useruntimeengine="true" />
         <property name="IKVM.Runtime" value="IKVM.Runtime" />
         <if test="${signoption != ''}">
             <loadfile file="../tools/pubkey.txt" property="publickey" />
@@ -233,8 +232,6 @@
         <!-- generate stubs for the public Java APIs we expose -->
         <mkdir dir="../lib" />
         <exec program="${project::get-base-directory()}/../bin/ikvmstub.exe" useruntimeengine="true">
-            <arg value="-nostdlib" />
-            <arg value="-lib:${MTPATH}" />
             <arg value="-out:../lib/ikvm-api.jar" />
             <arg value="../bin/IKVM.OpenJDK.Core.dll" />
             <arg value="-namespace:ikvm.io" />

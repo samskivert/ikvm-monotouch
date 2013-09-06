@@ -15,4 +15,6 @@
             <property name="peverify" value="${path::combine(framework::get-sdk-directory('net-2.0'), 'peverify.exe')}" />
         </if>
     </if>
+
+    <property name="MTPATH" value="/Developer/MonoTouch/usr/lib/mono/2.1" />
 </project>

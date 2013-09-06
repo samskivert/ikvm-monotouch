@@ -21,40 +21,11 @@
         <nant buildfile="openjdk/openjdk.build" />
         <nant buildfile="runtime/runtime.build" />
         <!-- <nant buildfile="openjdk/openjdk.build" target="tools" /> -->
-        <nant buildfile="runtime/runtime.build" target="IKVM.NoEmitRuntime"/>
         <nant buildfile="ikvm/ikvm.build" />
         <!-- <nant buildfile="awt/awt.build" /> -->
         <nant buildfile="jvm/jvm.build" />
         <nant buildfile="native/native.build"/>
     </target>
-
-    <!-- this multi-phase build is needed to deal with core library dependency annoyances -->
-    <target name="phase1" depends="clean-managed CommonAssemblyInfo">
-        <copy file="ICSharpCode.SharpZipLib.dll" tofile="bin/ICSharpCode.SharpZipLib.dll"/>
-        <nant buildfile="tools/tools.build" />
-        <!-- <nant buildfile="awt/awt.build" target="first-pass" /> -->
-        <nant buildfile="reflect/reflect.build" />
-        <nant buildfile="ikvmc/ikvmc.build" />
-        <nant buildfile="ikvmstub/ikvmstub.build" />
-    </target>
-    <target name="phase2" depends="CommonAssemblyInfo">
-        <nant buildfile="runtime/runtime.build" target="first-pass" />
-    </target>
-    <target name="phase3" depends="CommonAssemblyInfo">
-        <nant buildfile="openjdk/openjdk.build" />
-    </target>
-    <target name="phase4" depends="CommonAssemblyInfo">
-        <nant buildfile="runtime/runtime.build" />
-        <!-- <nant buildfile="openjdk/openjdk.build" target="tools" /> -->
-        <nant buildfile="runtime/runtime.build" target="IKVM.NoEmitRuntime"/>
-    </target>
-    <target name="phase5" depends="CommonAssemblyInfo">
-        <nant buildfile="ikvm/ikvm.build" />
-        <!-- <nant buildfile="awt/awt.build" /> -->
-        <nant buildfile="jvm/jvm.build" />
-        <nant buildfile="native/native.build"/>
-    </target>
-    <!-- end multiphase fiddly business -->
 
     <target name="CommonAssemblyInfo">
         <copy file="CommonAssemblyInfo.cs.in" tofile="CommonAssemblyInfo.cs" overwrite="true">
