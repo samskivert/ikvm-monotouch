@@ -1705,6 +1705,7 @@ namespace IKVM.Internal
 				}
 				return ClassLoaderWrapper.GetWrapperFromType(type);
 			}
+			else if (type.BaseType == null) return null;
 			else if (ClassLoaderWrapper.IsRemappedType(type.BaseType))
 			{
 				return GetWrapperFromDotNetType(type.BaseType);
