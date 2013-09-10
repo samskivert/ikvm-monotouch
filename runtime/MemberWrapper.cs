@@ -445,7 +445,7 @@ namespace IKVM.Internal
 #if !NOEMIT
 				return new SmartConstructorMethodWrapper(declaringType, name, sig, (ConstructorInfo)method, parameterTypes, modifiers, flags);
 #else
-				return new SlowMethodWrapper(declaringType, name, sig, method, PrimitiveTypeWrapper.VOID, parameterTypes, modifiers, flags);
+				return new SlowConstructorMethodWrapper(declaringType, name, sig, (ConstructorInfo)method, PrimitiveTypeWrapper.VOID, parameterTypes, modifiers, flags);
 #endif
 			}
 			else
@@ -1103,6 +1103,32 @@ namespace IKVM.Internal
 		object ICustomInvoke.Invoke(object obj, object[] args, ikvm.@internal.CallerID callerID)
 		{
 			return method.Invoke(obj, args);
+		}
+#endif // !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR
+	}
+
+    class SlowConstructorMethodWrapper : MethodWrapper, ICustomInvoke
+	{
+		private ConstructorInfo ctor;
+
+		internal SlowConstructorMethodWrapper(TypeWrapper declaringType, string name, string sig, ConstructorInfo ctor, TypeWrapper returnType, TypeWrapper[] parameterTypes, Modifiers modifiers, MemberFlags flags)
+			: base(declaringType, name, sig, null, returnType, parameterTypes, modifiers, flags)
+		{
+			this.ctor = ctor;
+		}
+
+		internal override bool IsDynamicOnly
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+#if !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR
+		object ICustomInvoke.Invoke(object obj, object[] args, ikvm.@internal.CallerID callerID)
+		{
+			return ctor.Invoke(args);
 		}
 #endif // !STATIC_COMPILER && !FIRST_PASS && !STUB_GENERATOR
 	}
