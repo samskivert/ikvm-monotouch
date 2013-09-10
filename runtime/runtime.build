@@ -37,7 +37,7 @@
                 </replacetokens>
             </filterchain>
         </copy>
-        <csc noconfig="true" target="library" output="IKVM.Runtime.JNI.dll" define="${defs}" optimize="true" unsafe="true" rebuild="true">
+        <csc noconfig="true" nostdlib="true" target="library" output="IKVM.Runtime.JNI.dll" define="${defs}" optimize="true" unsafe="true" rebuild="true">
 <!--
             <arg unless="${string::starts-with(framework::get-target-framework(), 'mono')}" value="/baseaddress:0x55300000" />
 -->
@@ -50,7 +50,8 @@
                 <include name="../bin/IKVM.OpenJDK.Core.dll" asis="true" />
                 <include name="../bin/IKVM.Runtime.dll" asis="true" />
 		<include name="${MTPATH}/monotouch.dll" asis="true"/>
-                <include name="${framework::get-assembly-directory(framework::get-target-framework())}/System.dll" />
+		<include name="${MTPATH}/mscorlib.dll"/>
+		<include name="${MTPATH}/System.dll"/>
             </references>
         </csc>
         <copy file="IKVM.Runtime.JNI.dll" todir="../bin" />        
