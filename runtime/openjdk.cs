@@ -5788,9 +5788,6 @@ namespace IKVM.NativeCode.sun.reflect
 	public sealed class State
 	{
 		internal int Value;
-		public State(int Value) {
-			this.Value = Value;
-		}
 	}
 
 	static class Reflection
@@ -5800,11 +5797,10 @@ namespace IKVM.NativeCode.sun.reflect
 
 		internal static bool IsHideFromJava(MethodBase mb)
 		{
-			State state;
-			isHideFromJavaCache.TryGetValue(mb, out state);
-			if (state == null)
+			State state = isHideFromJavaCache.GetValue(mb, delegate { return new State(); });
+			if (state.Value == 0)
 			{
-				isHideFromJavaCache.Add(mb, state = new State(IsHideFromJavaImpl(mb)));
+				state.Value = IsHideFromJavaImpl(mb);
 			}
 			return state.Value == 1;
 		}
